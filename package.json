@@ -1,0 +1,26 @@
+{
+    "name": "tuflow",
+    "displayName": "tuflow",
+    "description": "Syntax highlighting and command completion for TUFLOW",
+    "version": "0.0.1",
+    "publisher": "danielcopelin",
+    "engines": {
+        "vscode": "^1.26.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "tuflow",
+            "aliases": ["TUFLOW", "tuflow"],
+            "extensions": [".tcf", ".tgc", ".tbc", ".tmf", ".ecf", ".tef", ".trd", ".tlf", ".toc", ".trfc"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "tuflow",
+            "scopeName": "source.tuflow",
+            "path": "./syntaxes/tuflow.tmLanguage.json"
+        }]
+    }
+}

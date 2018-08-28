@@ -1,0 +1,87 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "TUFLOW",
+	"patterns": [
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#constants"
+		},
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#entities"
+		},
+		{
+			"include": "#variables"
+		}
+	],
+	"repository": {
+		"keywords": {
+			"patterns": [{
+				"name": "keyword.control.tuflow",
+				"match": "\\b(?i)(if|else if|else|end if)\\b"
+			},
+			{
+				"name": "keyword.operator.comparison.tuflow",
+				"match": "(?<=\\s)==(?=\\s)"
+			}]
+		},
+		"constants": {
+			"patterns": [{
+				"name": "constant.numeric.tuflow",
+				"match": "(?<=\\s)(\\d+(\\.\\d+)?)(?=\\s)"
+			},
+			{
+				"name": "constant.language.tuflow",
+				"match": "(?i)(?<=\\s)(on|off|grid)(?=\\s)"
+			}]
+		},
+		"comments": {
+			"patterns": [{
+				"name": "comment.tuflow",
+				"match": "!.*"
+			}]
+		},
+		"strings": {
+			"patterns": [{
+				"name": "string.quoted.double.tuflow",
+				"begin": "\"",
+				"end": "\"",
+				"patterns": [
+					{
+						"name": "constant.character.escape.tuflow",
+						"begin": "<<",
+						"end": ">>"
+					}
+				]
+			},
+			{
+				"name": "string.path.tuflow",
+				"match": "([a-zA-Z]:|\\.+)[\\\\\/](?:[a-zA-Z0-9_~\\-\\<\\>\\.]+[\\\\\/])*([a-zA-Z0-9_~\\-\\<\\>\\.]+\\.[a-zA-Z0-9_]+)*"
+			}]
+		},
+		"entities": {
+			"patterns": [{
+				"name": "entity.name.class.tuflow",
+				"match": "(?i)(scenario|variable)"
+			},
+			{
+				"name": "entity.name.function.tuflow",
+				"match": "(?i)(Adjust Head at ESTRY Interface|Apply Wave Radiation Stresses|Apply Wind Stresses|Auto Terminate dV Cell Tolerance|Auto Terminate dV Value Tolerance|Auto Terminate Start Time|Auto Terminate Wet Cell Tolerance|BC Control File|BC Database|BC Event Name|BC Event Source|BC Event Text|BC Wet/Dry Method|BC Zero Flow|Bed Resistance Cell Sides|Bed Resistance Depth Interpolation|Bed Resistance Values|Blockage AEP|Blockage ARI|Blockage Default|Blockage Matrix|Blockage Matrix File|Blockage Method|Blockage Override|Blockage PMF AEP|Blockage PMF ARI|Blockage Return Period|Blue Kenue Start Date|Boundary Viscosity Factor|BSS Cutoff Depth|Calibration Points MI File|Cell Wet/Dry Depth|Cell Size|Change Zero Material Values to One|Check Inside Grid|Check MI Save Date|Check MI Save Ext|Command Line Processing|Control Number Factor|CPU Threads|CSV Header Line|CSV Maximum Number Columns|CSV Time|Defaults|Define Event|Define Output Zone|Demo Model|Density of Air|Density of Water|Depth/Ripple Height Factor Limit|Display Water Level|Distribute HX Flows|End 1D Domain|End 2D Domain|End After Maximum|End After Maximum Start Time|End Define|End Map Output|End Time|ESTRY Control File|Event File|Excel Start Date|Extrapolate Heads at Flow Boundaries|First Sweep Direction|Force File IO Display|Free Overfall|Free Overfall Factor|Froude Check|Froude Depth Adjustment|GA Convergence Value|GA Maximum Iterations|Geometry Control File|GIS Format|GIS Grid Vector Type|GIS Grid Vector Direction|GIS Grid Vector SF|GIS Grid Vector TTF|GIS Projection Check|GIS Supported Object Ignored|GIS Unsupported Object|Global FC Ch Factor|Global Weir Factor|GPU Device IDs|GPU DP Check|GPU RAM Optimisation|GPU Solver|GPU Temporal Scheme|Grid Format|Grid Output Cell Size|Grid Output Origin|Hardware|HPC 1D Synchronisation|HPC DP Check|HPC Temporal Scheme|HQ Boundary Approach|HX Force Weir Equation|HX ZC Check|If Event|If Scenario|Input Drive|Inside Region|Instability Water Level|Latitude|Layered FLC Default Approach|Line Cell Selection|Link 2D2D Adjust Velocity Head Factor|Link 2D2D Approach|Link 2D2D Distribute Flow|Link 2D2D Global Stability Factor|Log Folder|Map Cutoff Depth|Map Output Corner Interpolation|Map Output Data Types|Map Output Entire Model|Map Output Format|Map Output Interval|Mass Balance Output|Mass Balance Output Interval|Maximum 1D Channels|Maximum Courant Number|Maximum Points|Maximum Velocity Cutoff Depth|Maximum Vertices|Maximums and Minimums|Maximums and Minimums Only for Grids|Maximums and Minimums Time Series|Maximums Approach|Maximums Start Track Time|Maximum Track Time|Meshparts|MI Projection|Model Events|Model Output Zones|Model Platform|Model Precision|Model Scenarios|Model TUFLOW Build|Model TUFLOW Release|Negative Depth Approach|NetCDF Output Compression|NetCDF Output Start Date|NetCDF Output Time Unit|NetCDF Output Direction|NetCDF Output Format|Null Cell Checks|Number Iterations|Number 2D2D Link Iterations|Output Approach|Output Drive|Output Files|Output Folder|PO Approach|Pause|Process All Grids|Rainfall Boundaries|Rainfall Boundary Factor|Rainfall Control File|Rainfall Gauges|Recalculate Chezy Interval|Read File|Read GIS Auto Terminate|Read GIS Cyclone/Hurricane|Read GIS FC|Read GIS GLO|Read GIS IWL|Read GIS LP|Read GIS Output Zone|Read GIS PO|Read GIS Reporting Location|Read GIS X1D Network|Read GIS X1D Nodes|Read GIS X1D WLL|Read GIS X1D WLL Points|Read Grid IWL|Read Grid RF|Read Materials File|Read Restart File|Read RowCol IWL|Read Soils File|Reveal 1D Nodes|SA Minimum Depth|SA Proportion to Depth|Screen/Log Display Interval|Set Auto Terminate|Set IWL|Set Route Cut Off Type|Set Route Cut Off Values|Set Variable|Snap Tolerance|SHP Projection|Simulations Log Folder|Solution Scheme|Start 1D Domain|Start 2D Domain|Start Map Output|Start Time|Start Time Series Output|Supercritical|SX Flow Distribution Cutoff Depth|SX Head Adjustment|SX Head Distribution Cutoff Depth|SX Storage Approach|SX Storage Factor|SX ZC Check|Time Series Null Value|Time Series Output Format|Time Series Output Interval|Time Output Cutoff|Timestep|Timestep Initial|Timestep Maximum Increase|Timestep Minimum|TSF Update Interval|Tutorial Model|UK Hazard Debris Factor|UK Hazard Formula|UK Hazard Land Use|Units|Unused HX and SX Connections|Use Forward Slash|Verbose|Viscosity Coefficient|Viscosity Formulation|VG Z Adjustment|Water Level Checks|Wetting and Drying|WIBU FIRM Code Search Order|Wind/Wave Shallow Depths|Write Check Files|Write Empty GIS Files|Write PO Online|Write Restart File at Time|Write Restart File Interval|Write Restart File Version|Write Restart Filename|Write X1D Check Files|XF Files|XF Files Boundaries|XF Files Include in Filename|XMDF Output Compression|Zero Negative Depths|Zero Rainfall Check|ZP Hazard Cutoff Depth|Zpt Range Check|BC Database|BC Event Name|BC Event Text|Bridge Flow|Bridge Zero Coefficients|Create Nodes|CSV Format|CSV Maximum Number Columns|CSV Time|Conveyance Calculation|Culvert Critical H/D|Culvert Flow|Culvert Zero Coefficients|Depth Discharge Database|Depth Limit Factor|Flow Area|Flow Calculation|Froude Check|Froude Depth Adjustment|Head Rate Creep Factor|Head Rate Limit|Head Rate Limit Minimum|Interpolate Cross-Sections|Interpolate Culvert Inverts|M Channel Approach|M11 Network|Manhole Approach|Manhole Default Loss Approach|Manhole Default C Exit Coefficient|Manhole Default R Exit Coefficient|Manhole Default Side Clearance|Manhole Default Type|Manhole K Maximum Bend/Drop|Manhole Minimum Dimension|Manholes at All Culvert Junctions|Minimum Channel Conveyance Length|Minimum Channel Storage Length|Minimum NA|Minimum NA Pit|Momentum Equation|Order Output|Output Data Types|Output Folder|Output Interval|Output Times Same as 2D|Pit Channel Offset|Pit Default 2D Connection|Pit Default Road Crossfall|Pit Inlet Database|Pit Search Distance|Read File|Read GIS BC|Read GIS IWL|Read GIS Manhole|Read GIS Network|Read GIS Node|Read GIS Pits|Read GIS Table Links|Read GIS WLL|Read GIS WLL Points|Read Operating Control File|S Channel Approach|Set IWL|Set Variable|Start Output|Storage Above Structure Obvert|Structure Flow Levels|Structure Losses|Structure Losses Approach|Structure Routines|Taper Closed NA Table|Timestep|Trim XZ Profiles|Vel Rate Creep Factor|Vel Rate Limit|Vel Rate Limit Minimum|Weir Approach|Weir Flow|WLL Approach|WLL Automatic|WLL No Weirs|WLL Vertical Offset|WLLp Interpolate Bed|Write Check Files|XS Database|Allow Dangling Z Lines|Cell Size|Create TIN Zpts|Default Land Z|Grid Approach|Grid Size (N,M)|Grid Size (X,Y)|Interpolate ZC|Interpolate ZHC|Interpolate ZUV|Interpolate ZUVC|Interpolate ZUVH|Orientation|Orientation Angle|Origin|Pause When Polyline Does Not Find Zpt|Read File|Read GIS|Read GIS Code|Read GIS FC Shape|Read GIS Layered FC Shape|Read GIS Location|Read GIS Objects|Read GIS Variable Z Shape|Read GIS Z HX Line|Read GIS Z Line|Read GIS Z Shape|Read GIS Z Shape Route|Read GIS Zpts|Read GIS Zpts Gauge Output|Read Grid|Read Grid Location|Read Grid Zpts|Read RowCol|Read RowCol Zpts|Read TIN Zpts|Set|Set Code and Clean Zpt|Set Route Cut Off Type|Set Route Cut Off Values|Set Variable|Set Zpt|Stop|Thin Line as Thick|TIN Angles|TIN Coincident Point Distance|Write GIS Domain|Write GIS Grid|Write GIS Zpts|ZC == MIN(ZU,ZV)|Zero Z Point|BC Database|BC Event Name|BC Event Text|Blank BC Type|Blank HQ Slope|Global Rainfall Area Factor|Global Rainfall BC|Global Rainfall Continuing Loss|Global Rainfall Initial Loss|Read GIS BC|Read GIS RF|Read GIS SA|Read GIS Streams|Read RowCol RF|Set Variable|Unused HX and SX Connections|Cd|Cd Gate|Cd Gate Submerged|Cd Spillway|Define Control|End Define|Gate Height Fully Open|Gate Opening|Gate Seat Vertical Offset|Gate Speed|Gate Type|Gate Width Fully Open|Method|Operation|Period Opening/Closing|Period Startup/Shutdown|Pump Capacity|Pump Number|Pump Operation|Weir Height|Weir Height Speed|Weir Width|Weir Width Speed|IDW Exponent|IDW Maximum Distance|IDW Maximum Points|Maximum Hyetograph Points|Maximum RF Locations|Read GIS RF Points|Read GIS RF Polygons|Read GIS RF Triangles|RF Grid Cell Size|RF Grid Format|RF Grid Origin|RF Grid Size|RF Interpolation Method)"
+			}]
+		},
+		"variables": {
+			"patterns": [{
+				"name": "variable.function.tuflow",
+				"match": "(?i)(?<=variable\\s)\\S*(?=\\s==)"
+			}]
+		}
+	},
+	"scopeName": "source.tuflow"
+}
