@@ -2,7 +2,7 @@
     "name": "tuflow",
     "displayName": "tuflow",
     "description": "Syntax highlighting and command completion for TUFLOW",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "publisher": "danielcopelin",
     "engines": {
         "vscode": "^1.26.0"
