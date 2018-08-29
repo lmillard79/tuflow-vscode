@@ -2,10 +2,14 @@
     "name": "tuflow",
     "displayName": "tuflow",
     "description": "Syntax highlighting and command completion for TUFLOW",
-    "version": "0.2.0",
+    "version": "0.1.0",
     "publisher": "danielcopelin",
+    "repository": {
+        "type" : "git",
+        "url" : "https://github.com/danielcopelin/tuflow-vscode"
+    },
     "engines": {
-        "vscode": "^1.26.0"
+        "vscode": "^1.0.0"
     },
     "categories": [
         "Programming Languages"
