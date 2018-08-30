@@ -25,3 +25,15 @@ Currently, optional additional command keywords (such as the "MAX" in "Read GIS 
 ### 0.1.0
 
 Initial release of the TUFLOW Visual Studio Code extension.
+
+### 0.2.0
+
+Minor improvements to syntax highlighting.
+
+### 0.3.0
+
+More syntax highlighting improvements.
+
+### 0.4.0
+
+Testing of initial example code completion/snippet feature. Try typing "Read GIS Z Shape".

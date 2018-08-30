@@ -1,0 +1,7 @@
+{
+    "Insert ordered list": {
+        "prefix": "Read GIS Z Shape",
+        "body": "Read GIS Z Shape${1| , RIDGE , MAX , RAISE , GULLY , MIN , LOWER |}== ",
+        "description": "Insert ordered list"
+    }
+}
