@@ -1,95 +1,99 @@
 {
-	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-	"name": "TUFLOW",
-	"patterns": [
-		{
-			"include": "#keywords"
-		},
-		{
-			"include": "#strings"
-		},
-		{
-			"include": "#constants"
-		},
-		{
-			"include": "#comments"
-		},
-		{
-			"include": "#entities"
-		},
-		{
-			"include": "#variables"
-		}
-	],
-	"repository": {
-		"keywords": {
-			"patterns": [{
-				"name": "keyword.control.tuflow",
-				"match": "\\b(?i)(if|else if|else|end if)\\b"
-			},
-			{
-				"name": "keyword.operator.comparison.tuflow",
-				"match": "(?<=\\s)==(?=\\s)"
-			}]
-		},
-		"constants": {
-			"patterns": [{
-				"name": "constant.numeric.tuflow",
-				"match": "(?<=\\s)(\\d+(\\.\\d+)?)(?=(\\s|\\.\\s|,))"
-			},
-			{
-				"name": "constant.language.tuflow",
-				"match": "(?i)(?<=\\s)(on|off|grid)(?=\\s)"
-			}]
-		},
-		"comments": {
-			"patterns": [{
-				"name": "comment.tuflow",
-				"match": "!.*"
-			}]
-		},
-		"strings": {
-			"patterns": [{
-				"name": "string.quoted.double.tuflow",
-				"begin": "\"",
-				"end": "\"",
-				"patterns": [
-					{
-						"name": "constant.character.escape.tuflow",
-						"begin": "<<",
-						"end": ">>"
-					}
-				]
-			},
-			{
-				"name": "string.path.tuflow",
-				"match": "([a-zA-Z]:|\\.+)[\\\\\/](?:[a-zA-Z0-9_~\\-\\<\\>\\. ]+[\\\\\/])*([a-zA-Z0-9_~\\-\\<\\>\\. ]+\\.[a-zA-Z0-9_]{3,})?"
-			},
-			{
-				"name": "string.path.tuflow",
-				"match": "(([a-zA-Z]:|\\.+)[\\\\\/])*(?:[a-zA-Z0-9_~\\-\\<\\>\\. ]+[\\\\\/])*([a-zA-Z0-9_~\\-\\<\\>\\. ]+\\.[a-zA-Z0-9_]{3,}){1}"
-			}]
-		},
-		"entities": {
-			"patterns": [{
-				"name": "entity.name.class.tuflow",
-				"match": "(?i)(scenario|variable)"
-			},
-			{
-				"name": "entity.name.function.tuflow",
-				"match": "(?i)(Zpt Range Check|Zero Z Point|Zero Rainfall Check|Zero Negative Depths|ZP Hazard Cutoff Depth|ZC == MIN(ZU,ZV)|XS Database|XMDF Output Compression|XF Files Include in Filename|XF Files Boundaries|XF Files|Write X1D Check Files|Write Restart Filename|Write Restart File at Time|Write Restart File Version|Write Restart File Interval|Write PO Online|Write GIS Zpts|Write GIS Grid|Write GIS Domain|Write Empty GIS Files|Write Check Files|Write Check Files|Wind/Wave Shallow Depths|Wetting and Drying|Weir Width Speed|Weir Width|Weir Height Speed|Weir Height|Weir Flow|Weir Approach|Water Level Checks|WLLp Interpolate Bed|WLL Vertical Offset|WLL No Weirs|WLL Automatic|WLL Approach|WIBU FIRM Code Search Order|Viscosity Formulation|Viscosity Coefficient|Verbose|Vel Rate Limit Minimum|Vel Rate Limit|Vel Rate Creep Factor|VG Z Adjustment|Use Forward Slash|Unused HX and SX Connections|Unused HX and SX Connections|Units|UK Hazard Land Use|UK Hazard Formula|UK Hazard Debris Factor|Tutorial Model|Trim XZ Profiles|Timestep Minimum|Timestep Maximum Increase|Timestep Initial|Timestep|Timestep|Time Series Output Interval|Time Series Output Format|Time Series Null Value|Time Output Cutoff|Thin Line as Thick|Taper Closed NA Table|TSF Update Interval|TIN Coincident Point Distance|TIN Angles|Supercritical|Structure Routines|Structure Losses Approach|Structure Losses|Structure Flow Levels|Storage Above Structure Obvert|Stop|Start Time Series Output|Start Time|Start Output|Start Map Output|Start 2D Domain|Start 1D Domain|Solution Scheme|Snap Tolerance|Simulations Log Folder|Set Zpt(s)*|Set Variable|Set Variable|Set Variable|Set Variable|Set Route Cut Off Values|Set Route Cut Off Values|Set Route Cut Off Type|Set Route Cut Off Type|Set Mat|Set IWL|Set IWL|Set Code and Clean Zpt|Set Code|Set Auto Terminate|Set|Screen/Log Display Interval|SX ZC Check|SX Storage Factor|SX Storage Approach|SX Head Distribution Cutoff Depth|SX Head Adjustment|SX Flow Distribution Cutoff Depth|SHP Projection|SA Proportion to Depth|SA Minimum Depth|S Channel Approach|Reveal 1D Nodes|Recalculate Chezy Interval|Read TIN Zpts|Read Soils File|Read RowCol Zpts|Read RowCol RF|Read RowCol IWL|Read RowCol|Read Restart File|Read Operating Control File|Read Materials File|Read Grid Zpts|Read Grid RF|Read Grid Location|Read Grid IWL|Read Grid|Read GIS Zpts Gauge Output|Read GIS Zpts|Read GIS Z Shape Route|Read GIS Z Shape|Read GIS Z Line|Read GIS Z HX Line|Read GIS X1D WLL Points|Read GIS X1D WLL|Read GIS X1D Nodes|Read GIS X1D Network|Read GIS WLL Points|Read GIS WLL|Read GIS Variable Z Shape|Read GIS Table Links|Read GIS Streams|Read GIS SA|Read GIS Reporting Location|Read GIS RF Triangles|Read GIS RF Polygons|Read GIS RF Points|Read GIS RF|Read GIS Pits|Read GIS PO|Read GIS Output Zone|Read GIS Objects|Read GIS Node|Read GIS Network|Read GIS Mat|Read GIS Manhole|Read GIS Location|Read GIS Layered FC Shape|Read GIS LP|Read GIS IWL|Read GIS IWL|Read GIS GLO|Read GIS FC Shape|Read GIS FC|Read GIS Cyclone/Hurricane|Read GIS Code|Read GIS BC|Read GIS BC|Read GIS Auto Terminate|Read GIS|Read File|Read File|Read File|Rainfall Gauges|Rainfall Control File|Rainfall Boundary Factor|Rainfall Boundaries|RF Interpolation Method|RF Grid Size|RF Grid Origin|RF Grid Format|RF Grid Cell Size|Pump Operation|Pump Number|Pump Capacity|Process All Grids|Pit Search Distance|Pit Inlet Database|Pit Default Road Crossfall|Pit Default 2D Connection|Pit Channel Offset|Period Startup/Shutdown|Period Opening/Closing|Pause When Polyline Does Not Find Zpt|Pause|PO Approach|Output Times Same as 2D|Output Interval|Output Folder|Output Folder|Output Files|Output Drive|Output Data Types|Output Approach|Origin|Orientation Angle|Orientation|Order Output|Operation|Number Iterations|Number 2D2D Link Iterations|Null Cell Checks|NetCDF Output Time Unit|NetCDF Output Start Date|NetCDF Output Format|NetCDF Output Direction|NetCDF Output Compression|Negative Depth Approach|Momentum Equation|Model TUFLOW Release|Model TUFLOW Build|Model Scenarios|Model Precision|Model Platform|Model Output Zones|Model Events|Minimum NA Pit|Minimum NA|Minimum Channel Storage Length|Minimum Channel Conveyance Length|Method|Meshparts|Maximums and Minimums Time Series|Maximums and Minimums Only for Grids|Maximums and Minimums|Maximums Start Track Time|Maximums Approach|Maximum Vertices|Maximum Velocity Cutoff Depth|Maximum Track Time|Maximum RF Locations|Maximum Points|Maximum Hyetograph Points|Maximum Courant Number|Maximum 1D Channels|Mass Balance Output Interval|Mass Balance Output|Map Output Interval|Map Output Format|Map Output Entire Model|Map Output Data Types|Map Output Corner Interpolation|Map Cutoff Depth|Manholes at All Culvert Junctions|Manhole Minimum Dimension|Manhole K Maximum Bend/Drop|Manhole Default Type|Manhole Default Side Clearance|Manhole Default R Exit Coefficient|Manhole Default Loss Approach|Manhole Default C Exit Coefficient|Manhole Approach|MI Projection|M11 Network|M Channel Approach|Log Folder|Link 2D2D Global Stability Factor|Link 2D2D Distribute Flow|Link 2D2D Approach|Link 2D2D Adjust Velocity Head Factor|Line Cell Selection|Layered FLC Default Approach|Latitude|Interpolate ZUVH|Interpolate ZUVC|Interpolate ZUV|Interpolate ZHC|Interpolate ZC|Interpolate Culvert Inverts|Interpolate Cross-Sections|Instability Water Level|Inside Region|Input Drive|If Scenario|If Event|IDW Maximum Points|IDW Maximum Distance|IDW Exponent|Head Rate Limit Minimum|Head Rate Limit|Head Rate Creep Factor|Hardware|HX ZC Check|HX Force Weir Equation|HQ Boundary Approach|HPC Temporal Scheme|HPC DP Check|HPC 1D Synchronisation|Grid Size \\(X,Y\\)|Grid Size \\(N,M\\)|Grid Output Origin|Grid Output Cell Size|Grid Format|Grid Approach|Global Weir Factor|Global Rainfall Initial Loss|Global Rainfall Continuing Loss|Global Rainfall BC|Global Rainfall Area Factor|Global FC Ch Factor|Geometry Control File|Gate Width Fully Open|Gate Type|Gate Speed|Gate Seat Vertical Offset|Gate Opening|Gate Height Fully Open|GPU Temporal Scheme|GPU Solver|GPU RAM Optimisation|GPU Device IDs|GPU DP Check|GIS Unsupported Object|GIS Supported Object Ignored|GIS Projection Check|GIS Grid Vector Type|GIS Grid Vector TTF|GIS Grid Vector SF|GIS Grid Vector Direction|GIS Format|GA Maximum Iterations|GA Convergence Value|Froude Depth Adjustment|Froude Depth Adjustment|Froude Check|Froude Check|Free Overfall Factor|Free Overfall|Force File IO Display|Flow Calculation|Flow Area|First Sweep Direction|Extrapolate Heads at Flow Boundaries|Excel Start Date|Event File|End Time|End Map Output|End Define|End Define|End After Maximum Start Time|End After Maximum|End 2D Domain|End 1D Domain|ESTRY Control File|Distribute HX Flows|Display Water Level|Depth/Ripple Height Factor Limit|Depth Limit Factor|Depth Discharge Database|Density of Water|Density of Air|Demo Model|Define Output Zone|Define Event|Define Control|Defaults|Default Land Z|Culvert Zero Coefficients|Culvert Flow|Culvert Critical H/D|Create TIN Zpts|Create Nodes|Conveyance Calculation|Control Number Factor|Command Line Processing|Check MI Save Ext|Check MI Save Date|Check Inside Grid|Change Zero Material Values to One|Cell Wet/Dry Depth|Cell Size|Cell Size|Cd Spillway|Cd Gate Submerged|Cd Gate|Cd|Calibration Points MI File|CSV Time|CSV Time|CSV Maximum Number Columns|CSV Maximum Number Columns|CSV Header Line|CSV Format|CPU Threads|Bridge Zero Coefficients|Bridge Flow|Boundary Viscosity Factor|Blue Kenue Start Date|Blockage Return Period|Blockage PMF ARI|Blockage PMF AEP|Blockage Override|Blockage Method|Blockage Matrix File|Blockage Matrix|Blockage Default|Blockage ARI|Blockage AEP|Blank HQ Slope|Blank BC Type|Bed Resistance Values|Bed Resistance Depth Interpolation|Bed Resistance Cell Sides|BSS Cutoff Depth|BC Zero Flow|BC Wet/Dry Method|BC Event Text|BC Event Text|BC Event Text|BC Event Source|BC Event Name|BC Event Name|BC Event Name|BC Database|BC Database|BC Database|BC Control File|Auto Terminate dV Value Tolerance|Auto Terminate dV Cell Tolerance|Auto Terminate Wet Cell Tolerance|Auto Terminate Start Time|Apply Wind Stresses|Apply Wave Radiation Stresses|Allow Dangling Z Lines|Adjust Head at ESTRY Interface)(?= ==)"
-			},
-			{
-				"name": "entity.name.function.tuflow",
-				"match": "(?i)(?<=Write Check Files )(EXCLUDE|INCLUDE)(?= ==)"
-			}]
-		},
-		"variables": {
-			"patterns": [{
-				"name": "variable.function.tuflow",
-				"match": "(?i)(?<=variable\\s)\\S*(?=\\s==)"
-			}]
-		}
-	},
-	"scopeName": "source.tuflow"
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "TUFLOW",
+  "patterns": [
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#constants"
+    },
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#entities"
+    },
+    {
+      "include": "#variables"
+    }
+  ],
+  "repository": {
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.tuflow",
+          "match": "\\b(?i)(if|else\\s?|end if|scenario\\s?|event\\s?)\\b"
+        },
+        {
+          "name": "keyword.operator.comparison.tuflow",
+          "match": "(?<=\\s)==(?=\\s)"
+        }
+      ]
+    },
+    "constants": {
+      "patterns": [
+        {
+          "name": "constant.numeric.tuflow",
+          "match": "(?<=\\s)(\\d+(\\.\\d+)?)(?=(\\s|\\.\\s|,))"
+        },
+        {
+          "name": "constant.language.tuflow",
+          "match": "(?i)(?<=\\s)(on|off|grid)(?=\\s)"
+        }
+      ]
+    },
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.tuflow",
+          "match": "!.*"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.tuflow",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.tuflow",
+              "begin": "<<",
+              "end": ">>"
+            }
+          ]
+        },
+        {
+          "name": "string.path.tuflow",
+          "match": "([a-zA-Z]:|\\.+)[\\\\/](?:[a-zA-Z0-9_~\\-\\<\\>\\. ]+[\\\\/])*([a-zA-Z0-9_~\\-\\<\\>\\. ]+\\.[a-zA-Z0-9_]{3,})?"
+        },
+        {
+          "name": "string.path.tuflow",
+          "match": "(([a-zA-Z]:|\\.+)[\\\\/])*(?:[a-zA-Z0-9_~\\-\\<\\>\\. ]+[\\\\/])*([a-zA-Z0-9_~\\-\\<\\>\\. ]+\\.[a-zA-Z0-9_]{3,}){1}"
+        }
+      ]
+    },
+    "entities": {
+      "patterns": [
+        {
+          "name": "entity.name.function.tuflow",
+          "match": "(?i)((\\(N,M\\)\\s?|\\(S\\)\\s?|\\(X,Y\\)\\s?|1D\\s?|2D\\s?|2D2D\\s?|ABOVE\\s?|ASC\\s?|ADD\\s?|ADDITIONAL\\s?|ADJUST\\s?|ADJUSTMENT\\s?|AFTER\\s?|AIR\\s?|ALIGNMENT\\s?|ALL\\s?|ALLOW\\s?|AND\\s?|ANGLE\\s?|ANGLES\\s?|APPLY\\s?|APPROACH\\s?|AREA\\s?|AS\\s?|AT\\s?|AUTO\\s?|AUTOMATIC\\s?|AEP\\s?|ARI\\s?|BALANCE\\s?|BC\\s?|BED\\s?|BEND/DROP\\s?|BG\\s?|BLANK\\s?|BNDY\\s?|BOUNDARIES\\s?|BOUNDARY\\s?|BRIDGE\\s?|BUILD\\s?|BASE\\s?|BLOCKAGE\\s?|BLUE\\s?|C\\s?|CALCULATION\\s?|CALIBRATION\\s?|CAPACITY\\s?|CD\\s?|CELL\\s?|CENTRED\\s?|CH\\s?|CHANGE\\s?|CHANNEL\\s?|CHECK\\s?|CHECKS\\s?|CHEZY\\s?|CL\\s?|CLEARANCE\\s?|CLOSED\\s?|CNM\\s?|CNM\\s?|CODE\\s?|COEFFICIENT\\s?|COEFFICIENTS\\s?|COINCIDENT\\s?|COMMAND\\s?|COMMANDS\\s?|COMPRESSION\\s?|CONNECTION\\s?|CONNECTIONS\\s?|CONTINUING\\s?|CONTROL\\s?|CONTROLS\\s?|CONVEYANCE\\s?|CORNERS\\s?|CREATE\\s?|CREEP\\s?|CRITICAL\\s?|CROSS-SECTIONS\\s?|CSV\\s?|CULVERT\\s?|CUT\\s?|CUTOFF\\s?|CV\\s?|CYCLONE\\s?|CORRECTOR\\s?|CORNER\\s?|CPU\\s?|CROSSFALL\\s?|COURANT\\s?|CURVE\\s?|CWF\\s?|DANGLING\\s?|DAT\\s?|DATA\\s?|DATABASE\\s?|DATE\\s?|DEBRIS\\s?|DEFAULT\\s?|DEFAULTS\\s?|DEFINE\\s?|DEMO\\s?|DENSITY\\s?|DEPTH\\s?|DEPTH/RIPPLE\\s?|DEPTHS\\s?|DIRECTION\\s?|DISPLAY\\s?|DISTANCE\\s?|DISTRIBUTE\\s?|DISTRIBUTION\\s?|DOES\\s?|DOMAIN\\s?|DOUBLE\\s?|DRIVE\\s?|DRYING\\s?|DURING\\s?|DYNAMIC\\s?|DEVICE\\s?|DV\\s?|EB\\s?|ELSE\\s?|EMPTY\\s?|END\\s?|ENGELHUND\\s?|EQUATION\\s?|ESTRY\\s?|EVENT\\s?|EVENTS\\s?|EXCEL\\s?|EXIT\\s?|EXPONENT\\s?|EXT\\s?|EXTERNAL\\s?|EXTRAPOLATE\\s?|EXTENT\\s?|EXCLUDE\\s?|FACTOR\\s?|FC\\s?|FILE\\s?|FILES\\s?|FIND\\s?|FIRST\\s?|FLC\\s?|FLC/L\\s?|FLOW\\s?|FLOWS\\s?|FLT\\s?|FOLDER\\s?|FORMAT\\s?|FORMULA\\s?|FORMULATION\\s?|FORWARD\\s?|FULLY\\s?|FREE\\s?|FRIC\\s?|FROUDE\\s?|FIRM\\s?|FLAG\\s?|GATE\\s?|GAUGE\\s?|GAUGES\\s?|GENERAL\\s?|GEOMETRY\\s?|GIS\\s?|GLO\\s?|GLOBAL\\s?|GPU\\s?|GRID\\s?|GULLY\\s?|GRID\\s?|GRIDDED\\s?|GRIDS\\s?|H/D\\s?|HAZARD\\s?|HEAD\\s?|HEADS\\s?|HEIGHT\\s?|HQ\\s?|HIGH\\s?|HURRICANE\\s?|HX\\s?|HYETOGRAPH\\s?|HARDWARE\\s?|HCN\\s?|HPC\\s?|IDW\\s?|IF\\s?|IGNORED\\s?|IL\\s?|IN\\s?|INCLUDE\\s?|INITIAL\\s?|INLET\\s?|INPUT\\s?|INSIDE\\s?|INSTABILITY\\s?|INTERFACE\\s?|INTERPOLATE\\s?|INTERPOLATION\\s?|INTERVAL\\s?|INVERTS\\s?|ISIS\\s?|ITERATIONS\\s?|IWL\\s?|IDS\\s?|JUNCTIONS\\s?|K\\s?|KENUE\\s?|LAND\\s?|LATITUDE\\s?|LAYERED\\s?|LENGTH\\s?|LEVEL\\s?|LIMIT\\s?|LINE\\s?|LINES\\s?|LINK\\s?|LINKS\\s?|LOCATION\\s?|LOCATIONS\\s?|LOG\\s?|LOSS\\s?|LOSSES\\s?|LP\\s?|M\\s?|M11\\s?|MANHOLE\\s?|MANNING\\s?|MANNINGS\\s?|MAP\\s?|MASS\\s?|MAT\\s?|MAX\\s?|MATERIAL\\s?|MATERIALS\\s?|MAXIMUM\\s?|MAXIMUMS\\s?|MAX/MIN\\s?|MESH\\s?|MESHPARTS\\s?|METHOD\\s?|MI\\s?|MID\\s?|MIN\\s?|MINIMUM\\s?|MINIMUMS\\s?|MODEL\\s?|MOMENTUM\\s?|MULTIPLIER\\s?|MATRIX\\s?|MIN\\(ZU,ZV\\)\\s?|N\\s?|NA\\s?|NAR\\s?|NAME\\s?|NC\\s?|NEGATIVE\\s?|NESTING\\s?|NETCDF\\s?|NETCDF\\s?|NETWORK\\s?|NO\\s?|NODES\\s?|NONE\\s?|NOT\\s?|NULL\\s?|NUMBER\\s?|NAN\\s?|NAN\\s?|OBJECT\\s?|OBJECTS\\s?|OBLIQUE\\s?|OBVERT\\s?|OF\\s?|OFF\\s?|OFFSET\\s?|ONE\\s?|ONLINE\\s?|ONLY\\s?|OPEN\\s?|OPENING\\s?|OPENING/CLOSING\\s?|OPERATING\\s?|OPERATION\\s?|OPERATIONAL\\s?|ORDER\\s?|ORIENTATION\\s?|ORIGIN\\s?|OUTPUT\\s?|OVERFALL\\s?|PAUSE\\s?|PERIOD\\s?|PIT\\s?|PLATFORM\\s?|PLOT\\s?|PO\\s?|POINT\\s?|POINTS\\s?|POLY\\s?|POLYLINE\\s?|POLYGON\\s?|POLYGONS\\s?|PRECISION\\s?|PROCESS\\s?|PROFILES\\s?|PROCESSING\\s?|PROJECTION\\s?|PUMP\\s?|PITS\\s?|PLATFORM\\s?|Q\\s?|QUADTREE\\s?|R\\s?|RADIATION\\s?|RAINFALL\\s?|RATE\\s?|RIDGE\\s?|READ\\s?|RECALCULATE\\s?|RECEPTOR\\s?|RECEPTORS\\s?|RELEASE\\s?|REGION\\s?|RELATIVE\\s?|REPORTING\\s?|RES\\s?|RESISTANCE\\s?|RESTART\\s?|RF\\s?|ROUTE\\s?|RETURN\\s?|REVEAL\\s?|ROAD\\s?|ROWCOL\\s?|RADIUS\\s?|RATIO\\s?|REPEATED\\s?|S\\s?|SA\\s?|SAME\\s?|SAVE\\s?|SCENARIO\\s?|SCENARIOS\\s?|SCREEN/LOG\\s?|SEARCH\\s?|SEAT\\s?|SELECTION\\s?|SERIES\\s?|SET\\s?|SF\\s?|SHALLOW\\s?|SHAPE\\s?|SHP\\s?|SIDE\\s?|SIDES\\s?|SIZE\\s?|SLASH\\s?|SLOPE\\s?|SMOOTHED\\s?|SMS\\s?|SNAP\\s?|SOIL\\s?|SOILS\\s?|SOLVER\\s?|SOURCE\\s?|SPEED\\s?|SPILLWAY\\s?|START\\s?|STARTUP/SHUTDOWN\\s?|SLUICE\\s?|STEPPED\\s?|STOP\\s?|STORAGE\\s?|STORE\\s?|STRESSES\\s?|STRING\\s?|STRUCTURE\\s?|SUBMERGED\\s?|SUPERCRITICAL\\s?|SUPPORTED\\s?|SWEEP\\s?|SX\\s?|SAMPLE\\s?|SCHEME\\s?|SGS\\s?|SOLUTION\\s?|SRF\\s?|STREAMS\\s?|STRESS\\s?|TABLE\\s?|TAPER\\s?|TEXT\\s?|TGF\\s?|TGO\\s?|THICK\\s?|THIN\\s?|TIME\\s?|TIMES\\s?|TIMESTEP\\s?|TIN\\s?|TO\\s?|TOLERANCE\\s?|TMO\\s?|TRIANGLES\\s?|TRIGGER\\s?|TRIM\\s?|TRIANGLE\\s?|TTF\\s?|TUFLOW\\s?|TUTORIAL\\s?|TYPE\\s?|TYPES\\s?|T\\s?|TAU\\s?|TERMINATE\\s?|THREADS\\s?|TIMESTEPS\\s?|UK\\s?|UNIT\\s?|UNITS\\s?|UNUSED\\s?|UNSUPPORTED\\s?|USE\\s?|VALUE\\s?|VALUES\\s?|VARIABLE\\s?|VECTOR\\s?|VEL\\s?|VELOCITY\\s?|VERBOSE\\s?|VERTICAL\\s?|VERTICES\\s?|VG\\s?|VISCOSITY\\s?|WARMUP\\s?|WARNING\\s?|WATER\\s?|WAVE\\s?|WDAY\\s?|WEIR\\s?|WEIRS\\s?|WET\\s?|WET/DRY\\s?|WETTING\\s?|WHEN\\s?|WIBU\\s?|WIDTH\\s?|WIND\\s?|WIND/WAVE\\s?|WLL\\s?|WLLP\\s?|WLLP\\s?|WR\\s?|WRB\\s?|WRC\\s?|WRF\\s?|WRF\\s?|WRR\\s?|WRITE\\s?|X1D\\s?|XF\\s?|XMDF\\s?|XP\\s?|XS\\s?|XZ\\s?|Z\\s?|ZC\\s?|ZERO\\s?|ZH\\s?|ZHC\\s?|ZONE\\s?|ZONES\\s?|ZPT\\s?|ZPTS\\s?|ZUV\\s?|ZUVC\\s?|ZUVH\\s?)+)(?=\\s==)"
+        }
+      ]
+    },
+    "variables": {
+      "patterns": [
+        {
+          "name": "variable.function.tuflow",
+          "match": "(?i)(?<=variable\\s)\\S*(?=\\s==)"
+        }
+      ]
+    }
+  },
+  "scopeName": "source.tuflow"
 }

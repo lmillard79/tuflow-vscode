@@ -37,3 +37,9 @@ More syntax highlighting improvements.
 ### 0.4.0
 
 Testing of initial example code completion/snippet feature. Try typing "Read GIS Z Shape".
+
+### 0.6.0
+
+Added additional keywords and extensions for TUFLOW Release 2020-01-AA
+
+Changed some syntax highliting settings so "IF Scenario" and "If Event" controls were single colour
