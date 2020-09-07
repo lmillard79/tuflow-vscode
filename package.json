@@ -1,54 +1,66 @@
 {
-    "name": "tuflow",
-    "displayName": "tuflow",
-    "description": "Syntax highlighting and command completion for TUFLOW",
-    "version": "0.5.0",
-    "publisher": "danielcopelin",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/danielcopelin/tuflow-vscode"
-    },
-    "engines": {
-        "vscode": "^1.0.0"
-    },
-    "categories": [
-        "Programming Languages"
+  "name": "tuflow",
+  "displayName": "tuflow",
+  "description": "Syntax highlighting and command completion for TUFLOW",
+  "version": "0.6.0",
+  "publisher": "danielcopelin",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/danielcopelin/tuflow-vscode"
+  },
+  "engines": {
+    "vscode": "^1.0.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "tuflow",
+        "aliases": [
+          "TUFLOW",
+          "tuflow"
+        ],
+        "extensions": [
+          ".tcf",
+          ".ecf",
+          ".tbc",
+          ".tef",
+          ".tgc",
+          ".tmf",
+          ".ebc",
+          ".egf",
+          ".rdf",
+          ".trd",
+          ".erd",
+          ".elf",
+          ".tlf",
+          ".trfcf",
+          ".trfc",
+          ".toc",
+          ".qcf"
+        ],
+        "configuration": "./language-configuration.json"
+      }
     ],
-    "contributes": {
-        "languages": [
-            {
-                "id": "tuflow",
-                "aliases": [
-                    "TUFLOW",
-                    "tuflow"
-                ],
-                "extensions": [
-                    ".tcf",
-                    ".tgc",
-                    ".tbc",
-                    ".tmf",
-                    ".ecf",
-                    ".tef",
-                    ".trd",
-                    ".tlf",
-                    ".toc",
-                    ".trfc"
-                ],
-                "configuration": "./language-configuration.json"
-            }
-        ],
-        "grammars": [
-            {
-                "language": "tuflow",
-                "scopeName": "source.tuflow",
-                "path": "./syntaxes/tuflow.tmLanguage.json"
-            }
-        ],
-        "snippets": [
-            {
-                "language": "tuflow",
-                "path": "./snippets/tuflow.json"
-            }
-        ]
-    }
+    "grammars": [
+      {
+        "language": "tuflow",
+        "scopeName": "source.tuflow",
+        "path": "./syntaxes/tuflow.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "tuflow",
+        "path": "./snippets/tuflow.json"
+      }
+    ]
+  },
+  "__metadata": {
+    "id": "0805575c-1827-403e-9b99-d2f77f2c84a9",
+    "publisherId": "724e0895-6846-4103-9c3b-04710b69098d",
+    "publisherDisplayName": "danielcopelin"
+  }
 }
