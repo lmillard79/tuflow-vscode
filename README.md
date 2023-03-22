@@ -43,3 +43,9 @@ Testing of initial example code completion/snippet feature. Try typing "Read GIS
 Added additional keywords and extensions for TUFLOW Release 2020-01-AA
 
 Changed some syntax highliting settings so "IF Scenario" and "If Event" controls were single colour
+
+### 0.7.0
+
+Added TUFLOW FV file extensions
+
+Added TUFLOW 2023-03-AA release keywords

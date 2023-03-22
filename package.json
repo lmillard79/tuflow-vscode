@@ -2,7 +2,7 @@
   "name": "tuflow",
   "displayName": "tuflow",
   "description": "Syntax highlighting and command completion for TUFLOW",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "publisher": "danielcopelin",
   "repository": {
     "type": "git",
@@ -39,7 +39,13 @@
           ".trfcf",
           ".trfc",
           ".toc",
-          ".qcf"
+          ".qcf",
+          ".fvc",
+          ".fvm",
+          ".fvsed",
+          ".fvptm",
+          ".mcf",
+          ".fvwq"
         ],
         "configuration": "./language-configuration.json"
       }
