@@ -1,0 +1,9 @@
+Start == AUTO
+Geometry Control File (.tgc) == myDummymodel.tgc
+BC Control File (.tcf) == myDummymodel.tbc
+Output == myDummymodel
+if (condition == ON) then
+    scenario == flood
+        ! This is a nested comment
+    end if
+! This comment starts at column 1

@@ -24,5 +24,24 @@
         ["(", ")"],
         ["\"", "\""],
         ["'", "'"]
+    ],
+    // indentation rules
+    "indentationRules": {
+        "increaseIndentPattern": "^\\s*(if|scenario|event)\\s*==",
+        "decreaseIndentPattern": "^\\s*(end\\sif|end\\sscenario|end\\sevent)"
+    },
+    // automatic indentation
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    // on enter rules for comment alignment
+    "onEnterRules": [
+        {
+            "beforeText": "^(.*)!(.*)$",
+            "action": {
+                "indent": "none",
+                "appendText": "! "
+            }
+        }
     ]
 }

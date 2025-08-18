@@ -1,0 +1,10 @@
+! This is a comment
+Start == AUTO
+Geometry Control File (.tgc) == myDummymodel.tgc
+BC Control File (.tbc) == myDummymodel.tbc
+Output == myDummymodel
+! Another comment with some keywords
+if (condition == ON) then
+    scenario == flood
+    ! comment inside scenario
+end if

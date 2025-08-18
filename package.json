@@ -1,23 +1,38 @@
 {
-  "name": "tuflow",
-  "displayName": "tuflow",
-  "description": "Syntax highlighting and command completion for TUFLOW",
-  "version": "0.7.0",
-  "publisher": "danielcopelin",
+  "name": "tuflow-helper",
+  "displayName": "TUFLOW Helper",
+  "description": "Syntax highlighting and IntelliSense for TUFLOW files",
+  "version": "0.8.1",
+  "publisher": "lmillard79",
+  "icon": "images/ico.png",
+  "galleryBanner": {
+    "color": "#2c3e50",
+    "theme": "dark"
+  },
+  "homepage": "https://github.com/lmillard79/tuflow-vscode/blob/main/README.md",
+  "bugs": {
+    "url": "https://github.com/lmillard79/tuflow-vscode/issues"
+  },
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/danielcopelin/tuflow-vscode"
+    "url": "https://github.com/lmillard79/tuflow-vscode.git"
   },
   "engines": {
-    "vscode": "^1.0.0"
+    "vscode": "^1.74.0"
   },
   "categories": [
-    "Programming Languages"
+    "Programming Languages",
+    "Snippets"
   ],
+  "activationEvents": [
+    "onLanguage:tuflow-helper"
+  ],
+  "main": "./out/extension.js",
   "contributes": {
     "languages": [
       {
-        "id": "tuflow",
+        "id": "tuflow-helper",
         "aliases": [
           "TUFLOW",
           "tuflow"
@@ -52,21 +67,37 @@
     ],
     "grammars": [
       {
-        "language": "tuflow",
+        "language": "tuflow-helper",
         "scopeName": "source.tuflow",
         "path": "./syntaxes/tuflow.tmLanguage.json"
       }
     ],
     "snippets": [
       {
-        "language": "tuflow",
+        "language": "tuflow-helper",
         "path": "./snippets/tuflow.json"
       }
     ]
   },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "16.x",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "eslint": "^8.28.0",
+    "typescript": "^4.9.4"
+  },
   "__metadata": {
     "id": "0805575c-1827-403e-9b99-d2f77f2c84a9",
     "publisherId": "724e0895-6846-4103-9c3b-04710b69098d",
-    "publisherDisplayName": "danielcopelin"
+    "publisherDisplayName": "lmillard79"
   }
 }
