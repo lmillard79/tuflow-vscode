@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivate = exports.activate = void 0;
 const vscode = require("vscode");
 const commands_1 = require("./commands");
+const path = require("path");
 function activate(context) {
     console.log('TUFLOW extension activated');
     // Register completion provider for TUFLOW commands
@@ -15,9 +16,34 @@ function activate(context) {
             // Check if we're providing parameter suggestions after '=='
             const hasCommandPrefix = textBeforeCursor.includes('==');
             const commandMatch = textBeforeCursor.match(/^\s*([A-Za-z\s]+?)(?:\s*==\s*)?$/);
+            // Get file extension to filter commands
+            const fileExtension = document.fileName.substring(document.fileName.lastIndexOf('.')).toLowerCase();
             if (!hasCommandPrefix) {
-                // Add command completions
-                commands_1.allTuflowCommands.forEach(cmd => {
+                // Add command completions based on file extension
+                let filteredCommands = [];
+                switch (fileExtension) {
+                    case '.tcf':
+                        filteredCommands = commands_1.tcfCommands;
+                        break;
+                    case '.tgc':
+                        filteredCommands = commands_1.tgcCommands;
+                        break;
+                    case '.tbc':
+                        filteredCommands = commands_1.tbcCommands;
+                        break;
+                    case '.ecf':
+                        filteredCommands = commands_1.ecfCommands;
+                        break;
+                    case '.trfc':
+                        filteredCommands = commands_1.trfcCommands;
+                        break;
+                    case '.qcf':
+                        filteredCommands = commands_1.qcfCommands;
+                        break;
+                    default:
+                        filteredCommands = commands_1.allTuflowCommands;
+                }
+                filteredCommands.forEach(cmd => {
                     const item = new vscode.CompletionItem(cmd.name, vscode.CompletionItemKind.Keyword);
                     item.detail = cmd.description;
                     let documentation = `**${cmd.name}**\n\n${cmd.description}`;
@@ -110,7 +136,84 @@ function activate(context) {
             return null;
         }
     }, ' ', '(', ',');
-    context.subscriptions.push(provider, hoverProvider, signatureProvider);
+    // Register command to open file under cursor
+    const openFileCommand = vscode.commands.registerCommand('tuflow-helper.openFileUnderCursor', () => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            return;
+        }
+        const document = editor.document;
+        const selection = editor.selection;
+        const text = document.getText(selection);
+        if (text) {
+            // Try to extract a file path from the selected text
+            const filePathMatch = text.match(/(?:'|"|\s|^)([\w\\/\-\.]+\.[\w]+)(?:'|"|\s|$)/);
+            if (filePathMatch) {
+                const filePath = filePathMatch[1];
+                vscode.window.showInformationMessage(`Opening file: ${filePath}`);
+                // Try to open the file
+                vscode.workspace.openTextDocument(filePath).then(doc => {
+                    vscode.window.showTextDocument(doc);
+                }, error => {
+                    // If file doesn't exist, show error message
+                    vscode.window.showErrorMessage(`Could not open file: ${filePath}. Error: ${error.message}`);
+                });
+            }
+            else {
+                vscode.window.showErrorMessage('No valid file path found in selection or under cursor');
+            }
+        }
+        else {
+            // If no text is selected, try to get file path under cursor
+            const position = editor.selection.active;
+            const lineText = document.lineAt(position.line).text;
+            // Extract word under cursor
+            const wordRange = document.getWordRangeAtPosition(position);
+            if (wordRange) {
+                const word = document.getText(wordRange);
+                // Try to open as file
+                vscode.workspace.openTextDocument(word).then(doc => {
+                    vscode.window.showTextDocument(doc);
+                }, error => {
+                    vscode.window.showErrorMessage(`Could not open file: ${word}. Error: ${error.message}`);
+                });
+            }
+            else {
+                vscode.window.showErrorMessage('No text selected or under cursor');
+            }
+        }
+    });
+    // Register command to open documentation based on file extension
+    const openDocumentationCommand = vscode.commands.registerCommand('tuflow-helper.openDocumentation', () => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            return;
+        }
+        const document = editor.document;
+        const fileExtension = path.extname(document.fileName).toLowerCase();
+        // Mapping of file extensions to documentation files
+        const documentationMap = {
+            '.tcf': 'doc/Appendix A TCF Commands _ TUFLOW Classic_HPC User Manual 2023-03.html',
+            '.tgc': 'doc/Appendix C TGC Commands _ TUFLOW Classic_HPC User Manual 2023-03.html',
+            '.tbc': 'doc/Appendix D TBC Commands _ TUFLOW Classic_HPC User Manual 2023-03.html',
+            '.ecf': 'doc/Appendix B ECF Commands _ TUFLOW Classic_HPC User Manual 2025.0.htm',
+            '.trfc': 'doc/Appendix F TRFC Commands _ TUFLOW Classic_HPC User Manual 2025.0.htm',
+            '.qcf': 'doc/Appendix H QCF Commands _ TUFLOW Classic_HPC User Manual 2025.0.htm'
+        };
+        const docPath = documentationMap[fileExtension];
+        if (docPath) {
+            const fullDocPath = path.join(vscode.workspace.rootPath || '', docPath);
+            vscode.workspace.openTextDocument(fullDocPath).then(doc => {
+                vscode.window.showTextDocument(doc);
+            }, error => {
+                vscode.window.showErrorMessage(`Could not open documentation for ${fileExtension} files. Error: ${error.message}`);
+            });
+        }
+        else {
+            vscode.window.showErrorMessage(`No documentation available for ${fileExtension} files`);
+        }
+    });
+    context.subscriptions.push(provider, hoverProvider, signatureProvider, openFileCommand, openDocumentationCommand);
 }
 exports.activate = activate;
 function deactivate() { }

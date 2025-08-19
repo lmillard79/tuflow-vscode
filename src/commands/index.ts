@@ -6,26 +6,32 @@
 import { tcfCommands } from './tcfCommands';
 import { tgcCommands } from './tgcCommands';
 import { tbcCommands } from './tbcCommands';
+import { ecfCommands } from './ecfCommands';
+import { trfcCommands } from './trfcCommands';
+import { qcfCommands } from './qcfCommands';
 
 export interface TuflowCommand {
-    name: string;
-    description: string;
-    category: string;
-    parameters?: string[];
-    examples?: string[];
-    syntax?: string;
-    notes?: string;
+  name: string;
+  description: string;
+  category: string;
+  parameters?: string[];
+  examples?: string[];
+  syntax?: string;
+  notes?: string;
 }
 
 // Combine all commands into a single array
 export const allTuflowCommands: TuflowCommand[] = [
-    ...tcfCommands,
-    ...tgcCommands,
-    ...tbcCommands
+  ...tcfCommands,
+  ...tgcCommands,
+  ...tbcCommands,
+  ...ecfCommands,
+  ...trfcCommands,
+  ...qcfCommands
 ];
 
 // Export individual command arrays
-export { tcfCommands, tgcCommands, tbcCommands };
+export { tcfCommands, tgcCommands, tbcCommands, ecfCommands, trfcCommands, qcfCommands };
 
 // Helper functions for command retrieval
 export function getCommandsByCategory(category: string): TuflowCommand[] {
@@ -48,12 +54,18 @@ export function searchCommands(query: string): TuflowCommand[] {
 export const commandCategories = {
     TCF: 'TCF Commands (TUFLOW Control File)',
     TGC: 'TGC Commands (TUFLOW Geometry Control)',
-    TBC: 'TBC Commands (TUFLOW Boundary Conditions)'
+    TBC: 'TBC Commands (TUFLOW Boundary Conditions)',
+    ECF: 'ECF Commands (TUFLOW Event Control File)',
+    TRFC: 'TRFC Commands (TUFLOW Time Series Control File)',
+    QCF: 'QCF Commands (TUFLOW Quadtree Control File)'
 };
 
 // File type associations
 export const fileTypeCommands = {
     '.tcf': tcfCommands,
     '.tgc': tgcCommands,
-    '.tbc': tbcCommands
+    '.tbc': tbcCommands,
+    '.ecf': ecfCommands,
+    '.trfc': trfcCommands,
+    '.qcf': qcfCommands
 };
