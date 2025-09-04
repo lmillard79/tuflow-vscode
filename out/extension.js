@@ -17,7 +17,7 @@ function activate(context) {
             const hasCommandPrefix = textBeforeCursor.includes('==');
             const commandMatch = textBeforeCursor.match(/^\s*([A-Za-z\s]+?)(?:\s*==\s*)?$/);
             // Get file extension to filter commands
-            const fileExtension = document.fileName.substring(document.fileName.lastIndexOf('.')).toLowerCase();
+            const fileExtension = path.extname(document.fileName).toLowerCase();
             if (!hasCommandPrefix) {
                 // Add command completions based on file extension
                 let filteredCommands = [];
@@ -118,11 +118,36 @@ function activate(context) {
         provideSignatureHelp(document, position, token, context) {
             const lineText = document.lineAt(position).text;
             const textBeforeCursor = lineText.substring(0, position.character);
+            // Get file extension to filter commands
+            const fileExtension = path.extname(document.fileName).toLowerCase();
             // Match command names with spaces
-            const commandMatch = textBeforeCursor.match(/^\s*([A-Za-z\s]+?)(?:\s*==\s*)?$/);
+            const commandMatch = textBeforeCursor.match(/^\s*([A-Za-z0-9_\s]+?)(?:\s*==\s*)?$/);
             if (commandMatch) {
                 const commandName = commandMatch[1].trim();
-                const command = commands_1.allTuflowCommands.find(cmd => cmd.name.toLowerCase() === commandName.toLowerCase());
+                // Find command by name, considering file extension
+                let command;
+                switch (fileExtension) {
+                    case '.tcf':
+                        command = commands_1.tcfCommands.find(cmd => cmd.name.toLowerCase() === commandName.toLowerCase());
+                        break;
+                    case '.tgc':
+                        command = commands_1.tgcCommands.find(cmd => cmd.name.toLowerCase() === commandName.toLowerCase());
+                        break;
+                    case '.tbc':
+                        command = commands_1.tbcCommands.find(cmd => cmd.name.toLowerCase() === commandName.toLowerCase());
+                        break;
+                    case '.ecf':
+                        command = commands_1.ecfCommands.find(cmd => cmd.name.toLowerCase() === commandName.toLowerCase());
+                        break;
+                    case '.trfc':
+                        command = commands_1.trfcCommands.find(cmd => cmd.name.toLowerCase() === commandName.toLowerCase());
+                        break;
+                    case '.qcf':
+                        command = commands_1.qcfCommands.find(cmd => cmd.name.toLowerCase() === commandName.toLowerCase());
+                        break;
+                    default:
+                        command = commands_1.allTuflowCommands.find(cmd => cmd.name.toLowerCase() === commandName.toLowerCase());
+                }
                 if (command && command.parameters && command.parameters.length > 0) {
                     const signature = new vscode.SignatureInformation(`${command.name} == ${command.parameters.join(' ')}`, command.description);
                     signature.parameters = command.parameters.map(param => new vscode.ParameterInformation(param, `Parameter: ${param}`));
