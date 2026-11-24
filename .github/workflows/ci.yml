@@ -1,0 +1,72 @@
+name: Extension CI
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Compile, lint and tests (${{ matrix.os }}, VS Code ${{ matrix.vscode }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        vscode: ['1.147.0', '1.74.3']
+    env:
+      TUFLOW_TEST_VSCODE_VERSION: ${{ matrix.vscode }}
+      GITHUB_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Reject high and critical npm advisories
+        run: npm audit --audit-level=high
+      - name: Verify production dependency audit
+        run: npm audit --omit=dev --audit-level=low
+      - name: Compile
+        run: npm run compile
+      - name: Lint
+        run: npm run lint
+      - name: Verify build/test failure propagation
+        run: npm run test:fail-closed
+      - name: Verify acceptance fixture integrity and script syntax
+        if: matrix.vscode == '1.147.0'
+        run: |
+          node test/acceptance/check-fixtures.mjs
+          node --check test/acceptance/vscode-runner.cjs
+          node --check test/acceptance/run-host.cjs
+          node --check test/acceptance/assertions.cjs
+          node --check test/acceptance/compare-reports.mjs
+      - name: Full test command (Linux)
+        if: runner.os == 'Linux'
+        run: xvfb-run -a npm test
+      - name: Full test command (Windows)
+        if: runner.os == 'Windows'
+        run: npm test
+      - name: Build and validate VSIX (no publishing)
+        run: npm run package:vsix
+      - name: Installed VSIX Extension Host smoke tests (Linux)
+        if: runner.os == 'Linux'
+        run: xvfb-run -a npm run test:vsix
+      - name: Installed VSIX Extension Host smoke tests (Windows)
+        if: runner.os == 'Windows'
+        run: npm run test:vsix
+      - name: Retain VSIX for manual installation testing
+        if: runner.os == 'Linux' && matrix.vscode == '1.147.0'
+        uses: actions/upload-artifact@v4
+        with:
+          name: tuflow-helper-vsix
+          path: tuflow-helper.vsix
+          if-no-files-found: error

@@ -9,7 +9,7 @@
     "color": "#2c3e50",
     "theme": "dark"
   },
-  "homepage": "https://github.com/lmillard79/tuflow-vscode/blob/main/README.md",
+  "homepage": "https://github.com/lmillard79/tuflow-vscode/blob/master/README.md",
   "bugs": {
     "url": "https://github.com/lmillard79/tuflow-vscode/issues"
   },
@@ -26,13 +26,13 @@
     "Snippets"
   ],
   "activationEvents": [
-    "onLanguage:tuflow-helper"
+    "onLanguage:tuflow"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "languages": [
       {
-        "id": "tuflow-helper",
+        "id": "tuflow",
         "aliases": [
           "TUFLOW",
           "tuflow"
@@ -67,23 +67,18 @@
     ],
     "grammars": [
       {
-        "language": "tuflow-helper",
+        "language": "tuflow",
         "scopeName": "source.tuflow",
         "path": "./syntaxes/tuflow.tmLanguage.json"
       }
     ],
     "snippets": [
       {
-        "language": "tuflow-helper",
+        "language": "tuflow",
         "path": "./snippets/tuflow.json"
       }
     ],
     "commands": [
-      {
-        "command": "tuflow-helper.openFileUnderCursor",
-        "title": "Open File Under Cursor",
-        "category": "TUFLOW"
-      },
       {
         "command": "tuflow-helper.openDocumentation",
         "title": "Open Documentation",
@@ -93,9 +88,9 @@
     "menus": {
       "editor/context": [
         {
-          "when": "editorTextFocus && editorLangId == tuflow-helper",
-          "command": "tuflow-helper.openFileUnderCursor",
-          "group": "navigation"
+          "when": "editorTextFocus && editorLangId == tuflow",
+          "command": "tuflow-helper.openDocumentation",
+          "group": "navigation@2"
         }
       ]
     }
@@ -104,21 +99,39 @@
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
+    "lint": "eslint \"src/**/*.ts\"",
     "pretest": "npm run compile && npm run lint",
-    "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
+    "test": "npm run test:unit && npm run test:extension",
+    "test:unit": "node scripts/run-unit-tests.cjs",
+    "test:extension": "vscode-test",
+    "package:vsix": "vsce package --no-dependencies --out tuflow-helper.vsix && node scripts/verify-vsix.cjs tuflow-helper.vsix",
+    "test:vsix": "vscode-test --config .vscode-test-installed.mjs",
+    "test:fail-closed": "node scripts/verify-failure-propagation.cjs",
+    "test:registration": "node --test test/language-registration.test.cjs"
   },
   "devDependencies": {
-    "@types/vscode": "^1.74.0",
+    "@eslint/js": "9.39.2",
     "@types/node": "16.x",
-    "@typescript-eslint/eslint-plugin": "^5.45.0",
-    "@typescript-eslint/parser": "^5.45.0",
-    "eslint": "^8.28.0",
-    "typescript": "^4.9.4"
+    "@types/vscode": "1.74.0",
+    "@typescript-eslint/eslint-plugin": "8.73.0",
+    "@typescript-eslint/parser": "8.73.0",
+    "@vscode/test-cli": "0.0.15",
+    "@vscode/test-electron": "3.1.0",
+    "@vscode/vsce": "4.1.1",
+    "eslint": "9.39.2",
+    "typescript": "5.9.3"
   },
   "__metadata": {
     "id": "0805575c-1827-403e-9b99-d2f77f2c84a9",
     "publisherId": "724e0895-6846-4103-9c3b-04710b69098d",
     "publisherDisplayName": "lmillard79"
+  },
+  "overrides": {
+    "minimatch@^3.1.2": {
+      "brace-expansion": "1.1.22"
+    },
+    "mocha@^11.7.6": {
+      "serialize-javascript": "7.1.4"
+    }
   }
 }

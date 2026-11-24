@@ -1,0 +1,10 @@
+{
+  "name": "tuflow-helper-smoke-host",
+  "displayName": "TUFLOW Helper Smoke Test Host",
+  "publisher": "chain-frost-tests",
+  "version": "0.0.0",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "main": "./extension.js"
+}

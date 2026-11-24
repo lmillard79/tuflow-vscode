@@ -1,0 +1,17 @@
+! UX acceptance fixture only. NOT a runnable TUFLOW model.
+Geometry Control File == geometry.tgc
+BC Control File == boundary.tbc
+ESTRY Control File == estuary.ecf
+Event File == events.tef
+Read File == include/nested.trd
+Read File == include/missing.trd
+Read File = include/nested.trd
+Read File == <<MODEL_ROOT>>/include/nested.trd
+Read File ==
+If Scenario == Baseline
+    Read File == include/leaf.trd ! inline note
+Else
+    Read File == include/nested.trd
+End If
+Output Folder == ..\results\<<~s1~>>
+Unknown Custom Setting == keep-me

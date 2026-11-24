@@ -1,0 +1,86 @@
+name: TUFLOW UX acceptance Extension Host (integrated)
+
+# Test the integrated Helper at the exact acceptance checkout, with no historical failure exemptions.
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pinned-host-evidence:
+    name: Real VS Code host (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          path: acceptance
+      - name: Record actual acceptance checkout identity
+        shell: bash
+        run: |
+          SHA="$(git -C acceptance rev-parse HEAD)"
+          echo "TUFLOW_HOST_ACCEPTANCE_SHA=$SHA" >> "$GITHUB_ENV"
+          echo "Acceptance source SHA: $SHA"
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          path: helper
+      - name: Verify matching exact Helper and acceptance source
+        shell: bash
+        env:
+          EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          test "$TUFLOW_HOST_ACCEPTANCE_SHA" = "$EXPECTED_SHA"
+          test "$(git -C helper rev-parse HEAD)" = "$EXPECTED_SHA"
+      - uses: actions/checkout@v4
+        with:
+          repository: Chain-Frost/tuflow_validator
+          ref: b8d5f9d42fe0a7f1f5e8d5337e8c9646ffdebfc5
+          path: validator
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Build candidate Helper
+        working-directory: helper
+        run: |
+          npm ci
+          npm run compile
+          npm run package:vsix
+      - name: Build candidate Validator
+        working-directory: validator
+        run: |
+          npm ci
+          npm run compile
+          npx vsce package --no-dependencies --out validator-test.vsix
+      - name: Run four isolated real Extension Host profiles
+        shell: bash
+        env:
+          NODE_PATH: ${{ github.workspace }}/validator/node_modules
+          TUFLOW_ACCEPT_ARTIFACTS: ${{ github.workspace }}/acceptance-host-reports
+          TUFLOW_HOST_HELPER_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          TUFLOW_HOST_VALIDATOR_SHA: b8d5f9d42fe0a7f1f5e8d5337e8c9646ffdebfc5
+        run: |
+          if [[ "$RUNNER_OS" == "Linux" ]]; then
+            xvfb-run -a node acceptance/test/acceptance/run-host.cjs \
+              helper/tuflow-helper.vsix validator/validator-test.vsix acceptance
+          else
+            node acceptance/test/acceptance/run-host.cjs \
+              helper/tuflow-helper.vsix validator/validator-test.vsix acceptance
+          fi
+      - name: Upload actual Host JSON evidence only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tuflow-acceptance-${{ matrix.os }}-integrated
+          path: acceptance-host-reports/*.json
+          if-no-files-found: warn
+          retention-days: 30

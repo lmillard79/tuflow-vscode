@@ -1,0 +1,614 @@
+[
+  {
+    "name": "known multiword with path and comment",
+    "line": "Read GIS Z Shape == ~\\model\\terrain.tif ! terrain",
+    "expected": [
+      [
+        "meta.command.header.tuflow",
+        "Read GIS Z Shape"
+      ],
+      [
+        "support.function.tuflow",
+        "Read GIS Z Shape"
+      ],
+      [
+        "keyword.operator.assignment.tuflow",
+        "=="
+      ],
+      [
+        "string.unquoted.path.tuflow",
+        "~\\model\\terrain.tif"
+      ],
+      [
+        "comment.line.exclamation.tuflow",
+        "! terrain"
+      ]
+    ]
+  },
+  {
+    "name": "known optional pipe modifier",
+    "line": "  Read GIS Z Shape | MAX == ..\\gis\\levy.gpkg >> Elevation",
+    "expected": [
+      [
+        "meta.command.header.tuflow",
+        "Read GIS Z Shape | MAX"
+      ],
+      [
+        "support.function.tuflow",
+        "Read GIS Z Shape"
+      ],
+      [
+        "keyword.operator.modifier.tuflow",
+        "|"
+      ],
+      [
+        "keyword.operator.assignment.tuflow",
+        "=="
+      ],
+      [
+        "string.unquoted.path.tuflow",
+        "..\\gis\\levy.gpkg"
+      ],
+      [
+        "keyword.operator.layer.tuflow",
+        ">>"
+      ]
+    ]
+  },
+  {
+    "name": "known map-output command",
+    "line": "mAp OuTpUt FoRmAt==XMDF",
+    "expected": [
+      [
+        "meta.command.header.tuflow",
+        "mAp OuTpUt FoRmAt"
+      ],
+      [
+        "support.function.tuflow",
+        "mAp OuTpUt FoRmAt"
+      ],
+      [
+        "keyword.operator.assignment.tuflow",
+        "=="
+      ]
+    ]
+  },
+  {
+    "name": "legacy control-file directive",
+    "line": "Geometry Control File (.tgc) == geometry.tgc",
+    "expected": [
+      [
+        "meta.command.header.tuflow",
+        "Geometry Control File (.tgc)"
+      ],
+      [
+        "support.function.tuflow",
+        "Geometry Control File (.tgc)"
+      ],
+      [
+        "keyword.operator.assignment.tuflow",
+        "=="
+      ],
+      [
+        "string.unquoted.path.tuflow",
+        "geometry.tgc"
+      ]
+    ]
+  },
+  {
+    "name": "known size with negative decimal",
+    "line": "Cell Size == -0.025",
+    "expected": [
+      [
+        "meta.command.header.tuflow",
+        "Cell Size"
+      ],
+      [
+        "support.function.tuflow",
+        "Cell Size"
+      ],
+      [
+        "keyword.operator.assignment.tuflow",
+        "=="
+      ],
+      [
+        "constant.numeric.tuflow",
+        "-0.025"
+      ]
+    ]
+  },
+  {
+    "name": "signed exponent and fractional numbers",
+    "line": "Set IWL == -.5 1e-3 +2.0E+4 .25",
+    "expected": [
+      [
+        "meta.command.header.tuflow",
+        "Set IWL"
+      ],
+      [
+        "support.function.tuflow",
+        "Set IWL"
+      ],
+      [
+        "keyword.operator.assignment.tuflow",
+        "=="
+      ],
+      [
+        "constant.numeric.tuflow",
+        "-.5"
+      ],
+      [
+        "constant.numeric.tuflow",
+        "1e-3"
+      ],
+      [
+        "constant.numeric.tuflow",
+        "+2.0E+4"
+      ],
+      [
+        "constant.numeric.tuflow",
+        ".25"
+      ]
+    ]
+  },
+  {
+    "name": "comments take precedence over known command",
+    "line": "   ! Read GIS Z Shape == bogus.tif -1",
+    "expected": [
+      [
+        "comment.line.exclamation.tuflow",
+        "! Read GIS Z Shape == bogus.tif -1"
+      ]
+    ]
+  },
+  {
+    "name": "inline comment must not highlight numbers or commands",
+    "line": "Timestep==2 ! Map Output Format == -99",
+    "expected": [
+      [
+        "meta.command.header.tuflow",
+        "Timestep"
+      ],
+      [
+        "support.function.tuflow",
+        "Timestep"
+      ],
+      [
+        "keyword.operator.assignment.tuflow",
+        "=="
+      ],
+      [
+        "constant.numeric.tuflow",
+        "2"
+      ],
+      [
+        "comment.line.exclamation.tuflow",
+        "! Map Output Format == -99"
+      ]
+    ]
+  },
+  {
+    "name": "quoted path containing an exclamation",
+    "line": "Read GIS Z Line == \"C:\\model!test\\my terrain.shp\" ! explanation",
+    "expected": [
+      [
+        "meta.command.header.tuflow",
+        "Read GIS Z Line"
+      ],
+      [
+        "support.function.tuflow",
+        "Read GIS Z Line"
+      ],
+      [
+        "keyword.operator.assignment.tuflow",
+        "=="
+      ],
+      [
+        "string.quoted.double.tuflow",
+        "\"C:\\model!test\\my terrain.shp\""
+      ],
+      [
+        "comment.line.exclamation.tuflow",
+        "! explanation"
+      ]
+    ]
+  },
+  {
+    "name": "placeholder inside double quotes",
+    "line": "Read GIS Z Point == \"~\\<<scenario>>\\points.shp\"",
+    "expected": [
+      [
+        "meta.command.header.tuflow",
+        "Read GIS Z Point"
+      ],
+      [
+        "support.function.tuflow",
+        "Read GIS Z Point"
+      ],
+      [
+        "keyword.operator.assignment.tuflow",
+        "=="
+      ],
+      [
+        "string.quoted.double.tuflow",
+        "\"~\\<<scenario>>\\points.shp\""
+      ],
+      [
+        "variable.other.placeholder.tuflow",
+        "<<scenario>>"
+      ]
+    ]
+  },
+  {
+    "name": "placeholder outside quotes",
+    "line": "Output == <<event>>_<<scenario>>",
+    "expected": [
+      [
+        "meta.command.header.tuflow",
+        "Output"
+      ],
+      [
+        "keyword.operator.assignment.tuflow",
+        "=="
+      ],
+      [
+        "variable.other.placeholder.tuflow",
+        "<<event>>"
+      ],
+      [
+        "variable.other.placeholder.tuflow",
+        "<<scenario>>"
+      ]
+    ]
+  },
+  {
+    "name": "unknown command not verified",
+    "line": "Completely Imaginary Option == 100",
+    "expected": [
+      [
+        "meta.command.header.tuflow",
+        "Completely Imaginary Option"
+      ],
+      [
+        "keyword.operator.assignment.tuflow",
+        "=="
+      ],
+      [
+        "constant.numeric.tuflow",
+        "100"
+      ]
+    ]
+  },
+  {
+    "name": "unknown uppercase command not verified",
+    "line": "XYZ AEP FILES == ON",
+    "expected": [
+      [
+        "meta.command.header.tuflow",
+        "XYZ AEP FILES"
+      ],
+      [
+        "keyword.operator.assignment.tuflow",
+        "=="
+      ],
+      [
+        "constant.language.tuflow",
+        "ON"
+      ]
+    ]
+  },
+  {
+    "name": "conditional syntax",
+    "line": "If Scenario == Design ! start",
+    "expected": [
+      [
+        "keyword.control.conditional.tuflow",
+        "If Scenario"
+      ],
+      [
+        "keyword.operator.assignment.tuflow",
+        "=="
+      ],
+      [
+        "comment.line.exclamation.tuflow",
+        "! start"
+      ]
+    ]
+  },
+  {
+    "name": "end conditional",
+    "line": "End If",
+    "expected": [
+      [
+        "keyword.control.conditional.tuflow",
+        "End If"
+      ]
+    ]
+  },
+  {
+    "name": "bare file and relative path",
+    "line": "BC Database == bc_dbase.csv",
+    "expected": [
+      [
+        "meta.command.header.tuflow",
+        "BC Database"
+      ],
+      [
+        "support.function.tuflow",
+        "BC Database"
+      ],
+      [
+        "keyword.operator.assignment.tuflow",
+        "=="
+      ],
+      [
+        "string.unquoted.path.tuflow",
+        "bc_dbase.csv"
+      ]
+    ]
+  },
+  {
+    "name": "comment with == but no command",
+    "line": "Not a command ! == 2.0",
+    "expected": [
+      [
+        "comment.line.exclamation.tuflow",
+        "! == 2.0"
+      ]
+    ]
+  },
+  {
+    "name": "else if scenario control",
+    "line": "ELSE IF Scenario == Historical",
+    "expected": [
+      [
+        "keyword.control.conditional.tuflow",
+        "ELSE IF Scenario"
+      ],
+      [
+        "keyword.operator.assignment.tuflow",
+        "=="
+      ]
+    ]
+  },
+  {
+    "name": "else and end control",
+    "line": "Else ! default branch",
+    "expected": [
+      [
+        "keyword.control.conditional.tuflow",
+        "Else"
+      ],
+      [
+        "comment.line.exclamation.tuflow",
+        "! default branch"
+      ]
+    ]
+  },
+  {
+    "name": "unknown near-miss read GIS command",
+    "line": "Read GIS Z Shapes == dem.shp",
+    "expected": [
+      [
+        "meta.command.header.tuflow",
+        "Read GIS Z Shapes"
+      ],
+      [
+        "keyword.operator.assignment.tuflow",
+        "=="
+      ],
+      [
+        "string.unquoted.path.tuflow",
+        "dem.shp"
+      ]
+    ]
+  },
+  {
+    "name": "unknown suffix of a known command",
+    "line": "Cell Size Extra == 5",
+    "expected": [
+      [
+        "meta.command.header.tuflow",
+        "Cell Size Extra"
+      ],
+      [
+        "keyword.operator.assignment.tuflow",
+        "=="
+      ],
+      [
+        "constant.numeric.tuflow",
+        "5"
+      ]
+    ]
+  },
+  {
+    "name": "path with spaces and layer selector",
+    "line": "Read GIS Z Shape == ~\\gis layers\\elevations.gpkg >> Zpt",
+    "expected": [
+      [
+        "meta.command.header.tuflow",
+        "Read GIS Z Shape"
+      ],
+      [
+        "support.function.tuflow",
+        "Read GIS Z Shape"
+      ],
+      [
+        "keyword.operator.assignment.tuflow",
+        "=="
+      ],
+      [
+        "string.unquoted.path.tuflow",
+        "~\\gis layers\\elevations.gpkg"
+      ],
+      [
+        "keyword.operator.layer.tuflow",
+        ">>"
+      ]
+    ]
+  },
+  {
+    "name": "single-quoted placeholder",
+    "line": "Read GIS Mat == '~\\<<scenario>>_mat.shp'",
+    "expected": [
+      [
+        "meta.command.header.tuflow",
+        "Read GIS Mat"
+      ],
+      [
+        "support.function.tuflow",
+        "Read GIS Mat"
+      ],
+      [
+        "keyword.operator.assignment.tuflow",
+        "=="
+      ],
+      [
+        "string.quoted.single.tuflow",
+        "'~\\<<scenario>>_mat.shp'"
+      ],
+      [
+        "variable.other.placeholder.tuflow",
+        "<<scenario>>"
+      ]
+    ]
+  },
+  {
+    "name": "incomplete command without left-hand text",
+    "line": "== -1",
+    "expected": [
+      [
+        "keyword.operator.assignment.tuflow",
+        "=="
+      ],
+      [
+        "constant.numeric.tuflow",
+        "-1"
+      ]
+    ]
+  },
+  {
+    "name": "apostrophe inside unquoted folder value",
+    "line": "Output Folder == results/O'Brien ! preserved comment",
+    "expected": [
+      [
+        "meta.command.header.tuflow",
+        "Output Folder"
+      ],
+      [
+        "keyword.operator.assignment.tuflow",
+        "=="
+      ],
+      [
+        "comment.line.exclamation.tuflow",
+        "! preserved comment"
+      ]
+    ]
+  },
+  {
+    "name": "adjacent single-quoted value after equals",
+    "line": "Output Folder =='an example output'",
+    "expected": [
+      [
+        "meta.command.header.tuflow",
+        "Output Folder"
+      ],
+      [
+        "keyword.operator.assignment.tuflow",
+        "=="
+      ],
+      [
+        "string.quoted.single.tuflow",
+        "'an example output'"
+      ]
+    ]
+  },
+  {
+    "name": "comments hash take precedence over commented-out command",
+    "line": "# Read GIS Z Shape == bogus.shp",
+    "expected": [
+      [
+        "comment.line.number-sign.tuflow",
+        "# Read GIS Z Shape == bogus.shp"
+      ]
+    ]
+  },
+  {
+    "name": "inline hash comment after numeric value",
+    "line": "Cell Size == -1.5 # numeric and END IF comment",
+    "expected": [
+      [
+        "meta.command.header.tuflow",
+        "Cell Size"
+      ],
+      [
+        "support.function.tuflow",
+        "Cell Size"
+      ],
+      [
+        "keyword.operator.assignment.tuflow",
+        "=="
+      ],
+      [
+        "constant.numeric.tuflow",
+        "-1.5"
+      ],
+      [
+        "comment.line.number-sign.tuflow",
+        "# numeric and END IF comment"
+      ]
+    ]
+  },
+  {
+    "name": "quoted path protects hash before inline hash comment",
+    "line": "Read GIS Z Line == \"C:\\model#archive\\survey.shp\" # explanation",
+    "expected": [
+      [
+        "meta.command.header.tuflow",
+        "Read GIS Z Line"
+      ],
+      [
+        "support.function.tuflow",
+        "Read GIS Z Line"
+      ],
+      [
+        "keyword.operator.assignment.tuflow",
+        "=="
+      ],
+      [
+        "string.quoted.double.tuflow",
+        "\"C:\\model#archive\\survey.shp\""
+      ],
+      [
+        "comment.line.number-sign.tuflow",
+        "# explanation"
+      ]
+    ]
+  },
+  {
+    "name": "inline hash comment after path",
+    "line": "Read GIS Z Shape == ~\\model\\terrain.tif # valid comment",
+    "expected": [
+      [
+        "meta.command.header.tuflow",
+        "Read GIS Z Shape"
+      ],
+      [
+        "support.function.tuflow",
+        "Read GIS Z Shape"
+      ],
+      [
+        "keyword.operator.assignment.tuflow",
+        "=="
+      ],
+      [
+        "string.unquoted.path.tuflow",
+        "~\\model\\terrain.tif"
+      ],
+      [
+        "comment.line.number-sign.tuflow",
+        "# valid comment"
+      ]
+    ]
+  }
+]

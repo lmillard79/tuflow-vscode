@@ -1,4 +1,6 @@
-node_modules
+node_modules/
+out/
+.vscode-test/
 *.vsix
-example_files
-.vscode
+example_files/
+.vscode/

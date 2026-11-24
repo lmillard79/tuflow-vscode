@@ -1,0 +1,5 @@
+! UX acceptance fixture, not a real ESTRY model.
+Read GIS Network == gis/absent_network.shp
+Read GIS Network == \\fileserver\hydraulics\estuary\network.shp
+Read GIS Network ==
+Read GIS Network = gis/absent_network.shp

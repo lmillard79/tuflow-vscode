@@ -1,0 +1,329 @@
+{
+  "schemaVersion": 1,
+  "description": "Editor UX fixtures; case categories are test intents, not authoritative solver-command validation.",
+  "cases": [
+    {
+      "id": "tcf-existing-geometry",
+      "file": "model.tcf",
+      "line": "Geometry Control File == geometry.tgc",
+      "kind": "existing-relative",
+      "owner": "validator",
+      "reference": "geometry.tgc"
+    },
+    {
+      "id": "tcf-existing-boundary",
+      "file": "model.tcf",
+      "line": "BC Control File == boundary.tbc",
+      "kind": "existing-relative",
+      "owner": "validator",
+      "reference": "boundary.tbc"
+    },
+    {
+      "id": "tcf-existing-estuary",
+      "file": "model.tcf",
+      "line": "ESTRY Control File == estuary.ecf",
+      "kind": "existing-relative",
+      "owner": "validator",
+      "reference": "estuary.ecf"
+    },
+    {
+      "id": "tcf-existing-events",
+      "file": "model.tcf",
+      "line": "Event File == events.tef",
+      "kind": "existing-relative",
+      "owner": "validator",
+      "reference": "events.tef"
+    },
+    {
+      "id": "tcf-existing-trd",
+      "file": "model.tcf",
+      "line": "Read File == include/nested.trd",
+      "kind": "existing-relative",
+      "owner": "validator",
+      "reference": "include/nested.trd"
+    },
+    {
+      "id": "tcf-missing-trd",
+      "file": "model.tcf",
+      "line": "Read File == include/missing.trd",
+      "kind": "missing-relative",
+      "owner": "validator",
+      "reference": "include/missing.trd"
+    },
+    {
+      "id": "tcf-macro",
+      "file": "model.tcf",
+      "line": "Read File == <<MODEL_ROOT>>/include/nested.trd",
+      "kind": "unresolved-macro",
+      "owner": "validator"
+    },
+    {
+      "id": "tcf-incomplete",
+      "file": "model.tcf",
+      "line": "Read File ==",
+      "kind": "incomplete",
+      "owner": "helper"
+    },
+    {
+      "id": "tcf-scenario",
+      "file": "model.tcf",
+      "line": "If Scenario == Baseline",
+      "kind": "conditional",
+      "owner": "validator"
+    },
+    {
+      "id": "tcf-inline",
+      "file": "model.tcf",
+      "line": "    Read File == include/leaf.trd ! inline note",
+      "kind": "inline-comment",
+      "owner": "shared"
+    },
+    {
+      "id": "tcf-else",
+      "file": "model.tcf",
+      "line": "Else",
+      "kind": "conditional",
+      "owner": "validator"
+    },
+    {
+      "id": "tcf-end",
+      "file": "model.tcf",
+      "line": "End If",
+      "kind": "conditional",
+      "owner": "validator"
+    },
+    {
+      "id": "tcf-output",
+      "file": "model.tcf",
+      "line": "Output Folder == ..\\results\\<<~s1~>>",
+      "kind": "output-macro",
+      "owner": "validator"
+    },
+    {
+      "id": "tcf-unknown",
+      "file": "model.tcf",
+      "line": "Unknown Custom Setting == keep-me",
+      "kind": "unknown",
+      "owner": "helper"
+    },
+    {
+      "id": "tgc-gpkg",
+      "file": "geometry.tgc",
+      "line": "Read GIS Z Shape == gis/absent_terrain.gpkg >> contours",
+      "kind": "gpkg-selector",
+      "owner": "validator"
+    },
+    {
+      "id": "tgc-unc",
+      "file": "geometry.tgc",
+      "line": "Read GIS Z Shape == \\\\fileserver\\hydraulics\\gis\\terrain.gpkg >> contours",
+      "kind": "unc",
+      "owner": "validator"
+    },
+    {
+      "id": "tgc-list",
+      "file": "geometry.tgc",
+      "line": "Read GIS Z Shape == ../gis/absent_a.shp | ../gis/absent_b.shp ! path list",
+      "kind": "path-list",
+      "owner": "validator"
+    },
+    {
+      "id": "tgc-macro-layer",
+      "file": "geometry.tgc",
+      "line": "Read GIS Z Shape == <<GIS_ROOT>>/terrain.gpkg >> <<LAYER>>",
+      "kind": "unresolved-macro",
+      "owner": "validator"
+    },
+    {
+      "id": "tgc-partial",
+      "file": "geometry.tgc",
+      "line": "Read GIS Z Sha",
+      "kind": "incomplete",
+      "owner": "helper"
+    },
+    {
+      "id": "tgc-incomplete",
+      "file": "geometry.tgc",
+      "line": "Read GIS Z Shape ==",
+      "kind": "incomplete",
+      "owner": "helper"
+    },
+    {
+      "id": "tgc-exponent",
+      "file": "geometry.tgc",
+      "line": "Set Code == -1.25e-3",
+      "kind": "numeric",
+      "owner": "helper"
+    },
+    {
+      "id": "tbc-missing-gis",
+      "file": "boundary.tbc",
+      "line": "Read GIS BC == gis/absent_bc.shp",
+      "kind": "missing-gis",
+      "owner": "validator"
+    },
+    {
+      "id": "tbc-layer",
+      "file": "boundary.tbc",
+      "line": "Read GIS BC == gis/absent_bc.gpkg >> bc_lines",
+      "kind": "gpkg-selector",
+      "owner": "validator"
+    },
+    {
+      "id": "tbc-macro",
+      "file": "boundary.tbc",
+      "line": "Read GIS BC == <<BC_ROOT>>/bc.shp",
+      "kind": "unresolved-macro",
+      "owner": "validator"
+    },
+    {
+      "id": "tbc-suppressed",
+      "file": "boundary.tbc",
+      "line": "Read GIS BC == gis/absent_bc.shp ! tpv-ignore",
+      "kind": "ignore-comment",
+      "owner": "validator"
+    },
+    {
+      "id": "tbc-incomplete",
+      "file": "boundary.tbc",
+      "line": "Read GIS BC ==",
+      "kind": "incomplete",
+      "owner": "helper"
+    },
+    {
+      "id": "ecf-network",
+      "file": "estuary.ecf",
+      "line": "Read GIS Network == gis/absent_network.shp",
+      "kind": "missing-gis",
+      "owner": "validator"
+    },
+    {
+      "id": "ecf-unc",
+      "file": "estuary.ecf",
+      "line": "Read GIS Network == \\\\fileserver\\hydraulics\\estuary\\network.shp",
+      "kind": "unc",
+      "owner": "validator"
+    },
+    {
+      "id": "ecf-incomplete",
+      "file": "estuary.ecf",
+      "line": "Read GIS Network ==",
+      "kind": "incomplete",
+      "owner": "helper"
+    },
+    {
+      "id": "tef-event",
+      "file": "events.tef",
+      "line": "Define Event == base",
+      "kind": "conditional",
+      "owner": "validator"
+    },
+    {
+      "id": "tef-nested",
+      "file": "events.tef",
+      "line": "    BC Event Source == base | rainfall",
+      "kind": "path-list-syntax",
+      "owner": "helper"
+    },
+    {
+      "id": "tef-incomplete",
+      "file": "events.tef",
+      "line": "BC Event Source ==",
+      "kind": "incomplete",
+      "owner": "helper"
+    },
+    {
+      "id": "trd-existing",
+      "file": "include/nested.trd",
+      "line": "Read File == include/leaf.trd",
+      "kind": "existing-relative",
+      "owner": "validator",
+      "reference": "include/leaf.trd"
+    },
+    {
+      "id": "trd-missing",
+      "file": "include/nested.trd",
+      "line": "Read File == missing_nested.trd",
+      "kind": "missing-relative",
+      "owner": "validator",
+      "reference": "include/missing_nested.trd"
+    },
+    {
+      "id": "trd-comment",
+      "file": "include/nested.trd",
+      "line": "    Read File == leaf.trd ! nested inline comment",
+      "kind": "inline-comment",
+      "owner": "shared"
+    },
+    {
+      "id": "qcf-output",
+      "file": "settings.qcf",
+      "line": "Output Folder == ../results",
+      "kind": "output-path",
+      "owner": "validator"
+    },
+    {
+      "id": "qcf-selector",
+      "file": "settings.qcf",
+      "line": "Read GIS Z Shape == gis/absent_quadtree.gpkg >> q_layer",
+      "kind": "gpkg-selector",
+      "owner": "validator"
+    },
+    {
+      "id": "qcf-incomplete",
+      "file": "settings.qcf",
+      "line": "Set Quadtree Level ==",
+      "kind": "incomplete",
+      "owner": "helper"
+    },
+    {
+      "id": "tcf-malformed-delimiter",
+      "file": "model.tcf",
+      "line": "Read File = include/nested.trd",
+      "kind": "malformed-delimiter",
+      "owner": "helper"
+    },
+    {
+      "id": "tgc-malformed-delimiter",
+      "file": "geometry.tgc",
+      "line": "Read GIS Z Shape = gis/absent_terrain.gpkg",
+      "kind": "malformed-delimiter",
+      "owner": "helper"
+    },
+    {
+      "id": "tbc-malformed-delimiter",
+      "file": "boundary.tbc",
+      "line": "Read GIS BC = gis/absent_bc.shp",
+      "kind": "malformed-delimiter",
+      "owner": "helper"
+    },
+    {
+      "id": "ecf-malformed-delimiter",
+      "file": "estuary.ecf",
+      "line": "Read GIS Network = gis/absent_network.shp",
+      "kind": "malformed-delimiter",
+      "owner": "helper"
+    },
+    {
+      "id": "tef-malformed-delimiter",
+      "file": "events.tef",
+      "line": "Define Event = base",
+      "kind": "malformed-delimiter",
+      "owner": "helper"
+    },
+    {
+      "id": "trd-malformed-delimiter",
+      "file": "include/nested.trd",
+      "line": "Read File = leaf.trd",
+      "kind": "malformed-delimiter",
+      "owner": "helper"
+    },
+    {
+      "id": "qcf-malformed-delimiter",
+      "file": "settings.qcf",
+      "line": "Set Quadtree Level = 4",
+      "kind": "malformed-delimiter",
+      "owner": "helper"
+    }
+  ]
+}

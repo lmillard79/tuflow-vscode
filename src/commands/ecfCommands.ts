@@ -1,127 +1,259 @@
-import { TuflowCommand } from './index';
+/** Audited against the official 2026.3 TUFLOW ESTRY Control File appendix. */
+import { defineAuditedCommands } from './audited';
 
-export const ecfCommands: TuflowCommand[] = [
-	{
-		name: 'AD Approach',
-		description: 'Controls the approach loss coefficient used in the 1D AD approach loss calculation.',
-		category: 'ECF',
-		parameters: ['METHOD A', 'METHOD B'],
-		syntax: 'AD Approach == [ METHOD A | {METHOD B} ]',
-		examples: [
-			'AD Approach == METHOD A',
-			'AD Approach == METHOD B'
-		],
-		notes: 'Classic and HPC'
-	},
-	{
-		name: 'Apply All Inverts',
-		description: 'Controls whether all inverts are applied or only the first one found.',
-		category: 'ECF',
-		parameters: ['ON', 'OFF'],
-		syntax: 'Apply All Inverts == [ {ON} | OFF ]',
-		examples: [
-			'Apply All Inverts == ON',
-			'Apply All Inverts == OFF'
-		],
-		notes: 'Classic and HPC'
-	},
-	{
-		name: 'BC Event Name',
-		description: 'Specifies the boundary condition event name for subsequent Read GIS BC commands.',
-		category: 'ECF',
-		parameters: ['<event_name>'],
-		syntax: 'BC Event Name == <event_name>',
-		examples: [
-			'BC Event Name == H010',
-			'BC Event Name == Q100'
-		],
-		notes: 'Classic and HPC'
-	},
-	{
-		name: 'Bridge Flow',
-		description: 'Controls the bridge flow calculation method.',
-		category: 'ECF',
-		parameters: ['Method A', 'Method B'],
-		syntax: 'Bridge Flow == [ Method A | {Method B} ]',
-		examples: [
-			'Bridge Flow == Method A',
-			'Bridge Flow == Method B'
-		],
-		notes: 'Classic and HPC'
-	},
-	{
-		name: 'Conveyance Calculation',
-		description: 'Controls how conveyance is calculated in the model.',
-		category: 'ECF',
-		parameters: ['CHANGE IN RESISTANCE', 'ALL PARALLEL'],
-		syntax: 'Conveyance Calculation == [ CHANGE IN RESISTANCE | {ALL PARALLEL} ]',
-		examples: [
-			'Conveyance Calculation == CHANGE IN RESISTANCE',
-			'Conveyance Calculation == ALL PARALLEL'
-		],
-		notes: 'Classic and HPC'
-	},
-	{
-		name: 'Create Nodes',
-		description: 'Controls whether nodes are automatically created in the model.',
-		category: 'ECF',
-		parameters: ['ON', 'OFF'],
-		syntax: 'Create Nodes == [ {ON} | OFF ]',
-		examples: [
-			'Create Nodes == ON',
-			'Create Nodes == OFF'
-		],
-		notes: 'Classic and HPC'
-	},
-	{
-		name: 'CSV Format',
-		description: 'Controls the format of CSV output files.',
-		category: 'ECF',
-		parameters: ['HORIZONTAL', 'VERTICAL'],
-		syntax: 'CSV Format == [ HORIZONTAL | {VERTICAL} ]',
-		examples: [
-			'CSV Format == HORIZONTAL',
-			'CSV Format == VERTICAL'
-		],
-		notes: 'Classic and HPC'
-	},
-	{
-		name: 'CSV Time',
-		description: 'Controls the time unit used in CSV output files.',
-		category: 'ECF',
-		parameters: ['DAYS', 'HOURS', 'MINUTES', 'SECONDS'],
-		syntax: 'CSV Time == [ {DAYS} | HOURS | MINUTES | SECONDS ]',
-		examples: [
-			'CSV Time == DAYS',
-			'CSV Time == HOURS',
-			'CSV Time == MINUTES',
-			'CSV Time == SECONDS'
-		],
-		notes: 'Classic and HPC'
-	},
-	{
-		name: 'Culvert Zero Coefficients',
-		description: 'Sets default values for zero coefficient attributes in culverts.',
-		category: 'ECF',
-		parameters: ['DEFAULT', 'OFF', 'v1, v2, v3, v4, v5'],
-		syntax: 'Culvert Zero Coefficients == [ DEFAULT | {OFF} | v1, v2, v3, v4, v5 ]',
-		examples: [
-			'Culvert Zero Coefficients == DEFAULT',
-			'Culvert Zero Coefficients == OFF',
-			'Culvert Zero Coefficients == 1.0, 0.6, 0.9, 0.5, 1.0'
-		],
-		notes: 'Classic and HPC'
-	},
-	{
-		name: 'Flow Area',
-		description: 'Controls which area is used for flow calculations.',
-		category: 'ECF',
-		parameters: ['EFFECTIVE', 'TOTAL'],
-		syntax: 'Flow Area == [ {EFFECTIVE} | TOTAL ]',
-		examples: [
-			'Flow Area == EFFECTIVE',
-			'Flow Area == TOTAL'
-		],
-		notes: 'Classic and HPC'
-	}
-];
+export const ecfCommands = defineAuditedCommands('ECF',
+    'https://docs.tuflow.com/classic-hpc/manual/2026.3/81-AppendicesB-ECFCommands.html',
+    [
+        {
+            "name": "1D Node Invert Approach",
+            "description": "Choose how 1D node invert values affect NA table bottoms.",
+            "syntax": "1D Node Invert Approach == {Method A} | Method B",
+            "valueKind": "enum",
+            "enumValues": [
+                "Method A",
+                "Method B"
+            ]
+        },
+        {
+            "name": "AD Approach",
+            "description": "Choose the 1D advection-dispersion approach.",
+            "syntax": "AD Approach == METHOD A | {METHOD B}",
+            "valueKind": "enum",
+            "enumValues": [
+                "METHOD A",
+                "METHOD B"
+            ]
+        },
+        {
+            "name": "Apply All Inverts",
+            "description": "Apply invert attributes to all 1D channels; legacy option.",
+            "syntax": "Apply All Inverts == {ON} | OFF",
+            "valueKind": "enum",
+            "enumValues": [
+                "ON",
+                "OFF"
+            ],
+            "notes": "Documented legacy command; avoid suggesting as a modern default."
+        },
+        {
+            "name": "BC Database",
+            "description": "Select the active boundary-condition CSV database.",
+            "syntax": "BC Database == <.csv_file>",
+            "valueKind": "file"
+        },
+        {
+            "name": "BC Event Name",
+            "description": "Set a boundary event name; legacy—use BC Event Source.",
+            "syntax": "BC Event Name == <bc_event_name>",
+            "valueKind": "text",
+            "notes": "Documented legacy command; avoid suggesting as a modern default.",
+            "argumentNames": [
+                "<bc_event_name>"
+            ]
+        },
+        {
+            "name": "BC Event Source",
+            "description": "Map boundary event substitution text to an event name.",
+            "syntax": "BC Event Source == <bc_event_text> | <bc_event_name>",
+            "valueKind": "tuple",
+            "argumentNames": [
+                "<bc_event_text>",
+                "<bc_event_name>"
+            ]
+        },
+        {
+            "name": "Bridge Flow",
+            "description": "Select the 1D bridge-flow calculation method.",
+            "syntax": "Bridge Flow == Method A | {Method B}",
+            "valueKind": "enum",
+            "enumValues": [
+                "Method A",
+                "Method B"
+            ]
+        },
+        {
+            "name": "Conveyance Calculation",
+            "description": "Choose how 1D conveyance combines resistance components.",
+            "syntax": "Conveyance Calculation == CHANGE IN RESISTANCE | {ALL PARALLEL}",
+            "valueKind": "enum",
+            "enumValues": [
+                "CHANGE IN RESISTANCE",
+                "ALL PARALLEL"
+            ]
+        },
+        {
+            "name": "Create Nodes",
+            "description": "Allow or disable automatic 1D node creation.",
+            "syntax": "Create Nodes == {ON} | OFF",
+            "valueKind": "enum",
+            "enumValues": [
+                "ON",
+                "OFF"
+            ]
+        },
+        {
+            "name": "CSV Format",
+            "description": "Select the layout of 1D CSV results.",
+            "syntax": "CSV Format == HORIZONTAL | {VERTICAL}",
+            "valueKind": "enum",
+            "enumValues": [
+                "HORIZONTAL",
+                "VERTICAL"
+            ]
+        },
+        {
+            "name": "CSV Time",
+            "description": "Select time units for 1D CSV output.",
+            "syntax": "CSV Time == {DAYS} | HOURS | MINUTES | SECONDS",
+            "valueKind": "enum",
+            "enumValues": [
+                "DAYS",
+                "HOURS",
+                "MINUTES",
+                "SECONDS"
+            ]
+        },
+        {
+            "name": "Culvert Zero Coefficients",
+            "description": "Set handling of zero or empty culvert coefficients.",
+            "syntax": "Culvert Zero Coefficients == DEFAULT | {OFF} | v1, v2, v3, v4, v5",
+            "valueKind": "tuple",
+            "enumValues": [
+                "DEFAULT",
+                "OFF"
+            ],
+            "argumentNames": [
+                "v1",
+                "v2",
+                "v3",
+                "v4",
+                "v5"
+            ]
+        },
+        {
+            "name": "Depth Discharge Database",
+            "description": "Select a CSV database of depth-discharge curves for Q channels.",
+            "syntax": "Depth Discharge Database == <depth_discharge_dbase.csv>",
+            "valueKind": "file"
+        },
+        {
+            "name": "Flow Area",
+            "description": "Choose effective or total 1D cross-section flow area.",
+            "syntax": "Flow Area == {EFFECTIVE} | TOTAL",
+            "valueKind": "enum",
+            "enumValues": [
+                "EFFECTIVE",
+                "TOTAL"
+            ]
+        },
+        {
+            "name": "Flow Calculation",
+            "description": "Choose 1D channel-flow calculation approach.",
+            "syntax": "Flow Calculation == Method A | {Method B}",
+            "valueKind": "enum",
+            "enumValues": [
+                "Method A",
+                "Method B"
+            ]
+        },
+        {
+            "name": "If Event",
+            "description": "Condition subsequent commands on selected event names.",
+            "syntax": "If Event == <e1> | <e2> | …",
+            "valueKind": "text"
+        },
+        {
+            "name": "If Scenario",
+            "description": "Condition subsequent commands on selected scenario names.",
+            "syntax": "If Scenario == <s1> | <s2> | …",
+            "valueKind": "text"
+        },
+        {
+            "name": "Manhole Approach",
+            "description": "Select automatic manhole definition method.",
+            "syntax": "Manhole Approach == METHOD A | METHOD B | {METHOD C}",
+            "valueKind": "enum",
+            "enumValues": [
+                "METHOD A",
+                "METHOD B",
+                "METHOD C"
+            ]
+        },
+        {
+            "name": "Output Folder",
+            "description": "Specify the location for ESTRY output files.",
+            "syntax": "Output Folder == <folder>",
+            "valueKind": "text"
+        },
+        {
+            "name": "Pit Inlet Database",
+            "description": "Select the CSV database for pit inlet curves.",
+            "syntax": "Pit Inlet Database == <pit_inlet_dbase.csv>",
+            "valueKind": "file"
+        },
+        {
+            "name": "Read File",
+            "description": "Include another ECF control file.",
+            "syntax": "Read File == <file>",
+            "valueKind": "file"
+        },
+        {
+            "name": "Read GIS BC",
+            "description": "Read 1D boundary-condition GIS geometries.",
+            "syntax": "Read GIS BC == <gis_layer>",
+            "valueKind": "file"
+        },
+        {
+            "name": "Read GIS Manhole",
+            "description": "Read the 1d_mh manhole GIS layer.",
+            "syntax": "Read GIS Manhole == <gis_layer>",
+            "valueKind": "file"
+        },
+        {
+            "name": "Read GIS Network",
+            "description": "Read 1d_nwk network GIS geometries.",
+            "syntax": "Read GIS Network == <gis_layer>",
+            "valueKind": "file"
+        },
+        {
+            "name": "Read GIS Node",
+            "description": "Read 1D node GIS geometries.",
+            "syntax": "Read GIS Node == <gis_layer>",
+            "valueKind": "file"
+        },
+        {
+            "name": "Read GIS Pits",
+            "description": "Read 1D pit GIS geometries.",
+            "syntax": "Read GIS Pits == <gis_layer>",
+            "valueKind": "file"
+        },
+        {
+            "name": "Read GIS Table Links",
+            "description": "Read GIS links to cross-section and other 1D tables.",
+            "syntax": "Read GIS Table Links == <gis_layer>",
+            "valueKind": "file"
+        },
+        {
+            "name": "Spatial Database",
+            "description": "Choose whether to inherit the spatial database from the TCF.",
+            "syntax": "Spatial Database == OFF | TCF",
+            "valueKind": "enum",
+            "enumValues": [
+                "OFF",
+                "TCF"
+            ]
+        },
+        {
+            "name": "Timestep",
+            "description": "Set the 1D ESTRY computational timestep in seconds.",
+            "syntax": "Timestep == <timestep_in_seconds>",
+            "valueKind": "number"
+        },
+        {
+            "name": "XS Database",
+            "description": "Select a cross-section database file.",
+            "syntax": "XS Database == <file>",
+            "valueKind": "file"
+        }
+    ]
+);

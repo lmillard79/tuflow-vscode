@@ -1,0 +1,171 @@
+name: Grammar and installed coexistence
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  grammar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install isolated TextMate tokenizer test libraries
+        run: npm install --no-save --package-lock=false --prefix .grammar-test-deps vscode-textmate@9.3.2 vscode-oniguruma@2.0.1
+      - name: Verify TextMate and Oniguruma tokenisation
+        run: NODE_PATH="$PWD/.grammar-test-deps/node_modules" node --test test/textmate.check.cjs
+
+  qa-vsix:
+    name: Package and inspect exact PR-head VSIX
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact source head, not GitHub's synthetic PR merge
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Verify exact source SHA
+        shell: bash
+        env:
+          EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          echo "QA VSIX source: $(git rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Package VSIX with repository's verification script (no publication)
+        run: npm run package:vsix
+      - name: Verify packaged shared language and grammar resources
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          import zipfile
+
+          with zipfile.ZipFile("tuflow-helper.vsix") as z:
+              names = set(z.namelist())
+              required = {
+                  "extension/package.json",
+                  "extension/out/extension.js",
+                  "extension/language-configuration.json",
+                  "extension/syntaxes/tuflow.tmLanguage.json",
+                  "extension/snippets/tuflow.json",
+              }
+              assert not required - names, f"Missing VSIX resources: {required - names}"
+              manifest = json.loads(z.read("extension/package.json"))
+              assert manifest["contributes"]["languages"][0]["id"] == "tuflow"
+              assert manifest["contributes"]["grammars"][0]["language"] == "tuflow"
+              assert manifest["contributes"]["grammars"][0]["scopeName"] == "source.tuflow"
+          PY
+          sha256sum tuflow-helper.vsix | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Retain exact-head QA VSIX for local Windows co-install tests
+        uses: actions/upload-artifact@v4
+        with:
+          name: tuflow-helper-qa-vsix
+          path: tuflow-helper.vsix
+          retention-days: 14
+          if-no-files-found: error
+
+  installed-coexistence:
+    name: Installed Helper / Validator coexistence (${{ matrix.os }})
+    needs: qa-vsix
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    env:
+      GITHUB_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      VALIDATOR_SOURCE_SHA: 4a0282e93b979345374076fb0adc60c7faf6af99
+    steps:
+      - name: Checkout exact source matching the packaged Helper
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Verify Helper test source identity
+        shell: bash
+        run: |
+          test "$(git rev-parse HEAD)" = "$GITHUB_HEAD_SHA"
+      - name: Checkout exact, corrected Validator source
+        uses: actions/checkout@v4
+        with:
+          repository: Chain-Frost/tuflow_validator
+          ref: 4a0282e93b979345374076fb0adc60c7faf6af99
+          path: _validator
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Retrieve exact-head packaged Helper VSIX
+        uses: actions/download-artifact@v4
+        with:
+          name: tuflow-helper-qa-vsix
+          path: .
+      - name: Install locked test and Validator toolchains
+        run: |
+          npm ci
+          npm ci --prefix _validator
+      - name: Verify Validator source identity
+        shell: bash
+        run: |
+          test "$(git -C _validator rev-parse HEAD)" = "$VALIDATOR_SOURCE_SHA"
+          echo "Validator source: $VALIDATOR_SOURCE_SHA" >> "$GITHUB_STEP_SUMMARY"
+      - name: Package Validator source as separate QA VSIX (not published)
+        working-directory: _validator
+        run: |
+          npm run compile
+          npx vsce package --no-dependencies --out ../tuflow-path-validator.vsix
+      - name: Record installed VSIX hashes and source versions
+        shell: node {0}
+        run: |
+          const fs = require('node:fs');
+          const crypto = require('node:crypto');
+          for (const name of ['tuflow-helper.vsix', 'tuflow-path-validator.vsix']) {
+            const sha = crypto.createHash('sha256').update(fs.readFileSync(name)).digest('hex');
+            console.log(name + ': ' + sha);
+            fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, name + ': ' + sha + '\n');
+          }
+      - name: Reset disposable test profile before Helper-only run
+        run: node scripts/reset-vscode-test-profile.cjs
+      - name: Test Helper-only installed VSIX on Linux
+        if: runner.os == 'Linux'
+        run: xvfb-run -a npm run test:vsix
+      - name: Test Helper-only installed VSIX on Windows
+        if: runner.os == 'Windows'
+        run: npm run test:vsix
+      - name: Reset disposable test profile before Validator-only run
+        run: node scripts/reset-vscode-test-profile.cjs
+      - name: Test Validator-only installed VSIX on Linux
+        if: runner.os == 'Linux'
+        run: xvfb-run -a npx --no-install vscode-test --config .vscode-test-validator-only.mjs
+      - name: Test Validator-only installed VSIX on Windows
+        if: runner.os == 'Windows'
+        run: npx --no-install vscode-test --config .vscode-test-validator-only.mjs
+      - name: Reset disposable test profile before combined run
+        run: node scripts/reset-vscode-test-profile.cjs
+      - name: Test Helper plus Validator installed VSIX on Linux
+        if: runner.os == 'Linux'
+        run: xvfb-run -a npx --no-install vscode-test --config .vscode-test-coexistence.mjs
+      - name: Test Helper plus Validator installed VSIX on Windows
+        if: runner.os == 'Windows'
+        run: npx --no-install vscode-test --config .vscode-test-coexistence.mjs
+      - name: Retain isolated host acceptance evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tuflow-installed-coexistence-${{ matrix.os }}
+          path: coexist-evidence/*.json
+          retention-days: 30
+          if-no-files-found: warn

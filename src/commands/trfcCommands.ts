@@ -1,167 +1,129 @@
-import { TuflowCommand } from './index';
+/** Audited against the official 2026.3 TUFLOW Rainfall Control File appendix. */
+import { defineAuditedCommands } from './audited';
 
-export const trfcCommands: TuflowCommand[] = [
-	{
-		name: 'IDW Exponent',
-		description: 'Changes the exponent in the IDW equation when using RF Interpolation Method == IDW.',
-		category: 'TRFC',
-		parameters: ['<p>', '2'],
-		syntax: 'IDW Exponent == [ <p> | {2} ]',
-		examples: [
-			'IDW Exponent == 2',
-			'IDW Exponent == 3'
-		],
-		notes: 'Classic and HPC. Refer to Section 8.5.3.6 for more details.'
-	},
-	{
-		name: 'IDW Maximum Distance',
-		description: 'Sets the maximum distance for a point to be considered in IDW interpolation.',
-		category: 'TRFC',
-		parameters: ['<max_dist>'],
-		syntax: 'IDW Maximum Distance == [ <max_dist> ]',
-		examples: [
-			'IDW Maximum Distance == 1000'
-		],
-		notes: 'Classic and HPC. Using metric units (default), the distance is in metres. Using Units == US Customary, the units are feet. Refer to Section 8.5.3.6 for more details.'
-	},
-	{
-		name: 'IDW Maximum Points',
-		description: 'Sets the maximum number of points considered in IDW interpolation.',
-		category: 'TRFC',
-		parameters: ['<max_points>'],
-		syntax: 'IDW Maximum Points == [ <max_points> ]',
-		examples: [
-			'IDW Maximum Points == 10'
-		],
-		notes: 'Classic and HPC. May reduce memory usage if a very large number of rainfall points are used. Refer to Section 8.5.3.6 for more details.'
-	},
-	{
-		name: 'Maximum Hyetograph Points',
-		description: 'Sets the maximum number of hyetograph points.',
-		category: 'TRFC',
-		parameters: ['<max_pts>', '1,000'],
-		syntax: 'Maximum Hyetograph Points == [ <max_pts> | {1,000} ]',
-		examples: [
-			'Maximum Hyetograph Points == 1000',
-			'Maximum Hyetograph Points == 5000'
-		],
-		notes: 'Classic and HPC'
-	},
-	{
-		name: 'Maximum RF Locations',
-		description: 'Sets the maximum number of RF locations.',
-		category: 'TRFC',
-		parameters: ['<max_rf_gauges>', '1,000'],
-		syntax: 'Maximum RF Locations == [ <max_rf_gauges> | {1,000} ]',
-		examples: [
-			'Maximum RF Locations == 1000',
-			'Maximum RF Locations == 2000'
-		],
-		notes: 'Classic and HPC'
-	},
-	{
-		name: 'Read GIS RF Point',
-		description: 'Reads a GIS layer containing rainfall point data.',
-		category: 'TRFC',
-		parameters: ['<gis_layer>'],
-		syntax: 'Read GIS RF Point == [ <gis_layer> ]',
-		examples: [
-			'Read GIS RF Point == gis/rainfall_points.shp'
-		],
-		notes: 'Classic and HPC'
-	},
-	{
-		name: 'Read GIS RF Polygons',
-		description: 'Reads a GIS layer containing rainfall polygon data.',
-		category: 'TRFC',
-		parameters: ['<gis_layer>'],
-		syntax: 'Read GIS RF Polygons == [ <gis_layer> ]',
-		examples: [
-			'Read GIS RF Polygons == gis/rainfall_polygons.shp'
-		],
-		notes: 'Classic and HPC'
-	},
-	{
-		name: 'Read GIS RF Triangles',
-		description: 'Reads a GIS layer containing rainfall triangle data.',
-		category: 'TRFC',
-		parameters: ['<gis_layer>'],
-		syntax: 'Read GIS RF Triangles == [ <gis_layer> ]',
-		examples: [
-			'Read GIS RF Triangles == gis/rainfall_triangles.shp'
-		],
-		notes: 'Classic and HPC'
-	},
-	{
-		name: 'RF Grid Cell Size',
-		description: 'Sets the cell size for RF grid interpolation.',
-		category: 'TRFC',
-		parameters: ['<value>'],
-		syntax: 'RF Grid Cell Size == [ <value> ]',
-		examples: [
-			'RF Grid Cell Size == 10'
-		],
-		notes: 'Classic and HPC'
-	},
-	{
-		name: 'RF Grid Format',
-		description: 'Specifies the format of RF grid files.',
-		category: 'TRFC',
-		parameters: ['ASC', 'FLT', 'NC', 'TIF'],
-		syntax: 'RF Grid Format == [ ASC | FLT | NC | TIF ]',
-		examples: [
-			'RF Grid Format == ASC',
-			'RF Grid Format == FLT',
-			'RF Grid Format == NC',
-			'RF Grid Format == TIF'
-		],
-		notes: 'Classic and HPC'
-	},
-	{
-		name: 'RF Grid Origin',
-		description: 'Sets the origin coordinates for RF grid interpolation.',
-		category: 'TRFC',
-		parameters: ['<OX>', '<OY>'],
-		syntax: 'RF Grid Origin == [ <OX>, <OY> ]',
-		examples: [
-			'RF Grid Origin == 0, 0',
-			'RF Grid Origin == 1000, 2000'
-		],
-		notes: 'Classic and HPC'
-	},
-	{
-		name: 'RF Grid Size (N,M)',
-		description: 'Sets the size of the RF grid in terms of rows and columns.',
-		category: 'TRFC',
-		parameters: ['<rows>', '<columns>'],
-		syntax: 'RF Grid Size (N,M) == [ <rows>, <columns> ]',
-		examples: [
-			'RF Grid Size (N,M) == 100, 200'
-		],
-		notes: 'Classic and HPC'
-	},
-	{
-		name: 'RF Grid Size (X,Y)',
-		description: 'Sets the size of the RF grid in terms of X and Y dimensions.',
-		category: 'TRFC',
-		parameters: ['<X_length>', '<Y_length>'],
-		syntax: 'RF Grid Size (X,Y) == [ <X_length>, <Y_length> ]',
-		examples: [
-			'RF Grid Size (X,Y) == 10000, 5000'
-		],
-		notes: 'Classic and HPC'
-	},
-	{
-		name: 'RF Interpolation Method',
-		description: 'Specifies the interpolation method used for rainfall data.',
-		category: 'TRFC',
-		parameters: ['IDW', 'POLYGON', 'TIN'],
-		syntax: 'RF Interpolation Method == [ IDW | POLYGON | TIN ]',
-		examples: [
-			'RF Interpolation Method == IDW',
-			'RF Interpolation Method == POLYGON',
-			'RF Interpolation Method == TIN'
-		],
-		notes: 'Classic and HPC'
-	}
-];
+export const trfcCommands = defineAuditedCommands('TRFC',
+    'https://docs.tuflow.com/classic-hpc/manual/2026.3/85-AppendicesF-TRFCCommands.html',
+    [
+        {
+            "name": "IDW Exponent",
+            "description": "Set inverse-distance weighting exponent.",
+            "syntax": "IDW Exponent == <p> | {2}",
+            "valueKind": "number"
+        },
+        {
+            "name": "IDW Maximum Distance",
+            "description": "Set maximum point distance for IDW interpolation.",
+            "syntax": "IDW Maximum Distance == <max_dist>",
+            "valueKind": "number"
+        },
+        {
+            "name": "IDW Maximum Points",
+            "description": "Limit the number of points considered for IDW interpolation.",
+            "syntax": "IDW Maximum Points == <max_points>",
+            "valueKind": "number"
+        },
+        {
+            "name": "If Event",
+            "description": "Condition subsequent commands on event names.",
+            "syntax": "If Event == <e1> | <e2> | …",
+            "valueKind": "text"
+        },
+        {
+            "name": "If Scenario",
+            "description": "Condition subsequent commands on scenario names.",
+            "syntax": "If Scenario == <s1> | <s2> | …",
+            "valueKind": "text"
+        },
+        {
+            "name": "Maximum Hyetograph Points",
+            "description": "Legacy pre-2026.0 memory limit, now ignored by TUFLOW.",
+            "syntax": "Maximum Hyetograph Points == <max_pts> | {1,000}",
+            "valueKind": "number",
+            "notes": "Legacy: as of TUFLOW 2026.0 the number is allocated dynamically; the command is ignored and CHECK 2624 is issued."
+        },
+        {
+            "name": "Maximum RF Locations",
+            "description": "Legacy pre-2026.0 point limit, now ignored by TUFLOW.",
+            "syntax": "Maximum RF Locations == <max_rf_gauges> | {1,000}",
+            "valueKind": "number",
+            "notes": "Legacy: as of TUFLOW 2026.0 the number is allocated dynamically; the command is ignored and CHECK 2624 is issued."
+        },
+        {
+            "name": "Read GIS RF Point",
+            "description": "Read rainfall gauge locations in 2d_rf format.",
+            "syntax": "Read GIS RF Point == <gis_layer>",
+            "valueKind": "file"
+        },
+        {
+            "name": "Read GIS RF Polygons",
+            "description": "Read rainfall regions for polygon interpolation.",
+            "syntax": "Read GIS RF Polygons == <gis_layer>",
+            "valueKind": "file"
+        },
+        {
+            "name": "Read GIS RF Triangles",
+            "description": "Read triangle regions for TIN interpolation.",
+            "syntax": "Read GIS RF Triangles == <gis_layer>",
+            "valueKind": "file"
+        },
+        {
+            "name": "RF Grid Cell Size",
+            "description": "Set the rainfall interpolation grid cell size.",
+            "syntax": "RF Grid Cell Size == <value>",
+            "valueKind": "number"
+        },
+        {
+            "name": "RF Grid Format",
+            "description": "Choose rainfall grid output format.",
+            "syntax": "RF Grid Format == ASC | FLT | NC | TIF",
+            "valueKind": "enum",
+            "enumValues": [
+                "ASC",
+                "FLT",
+                "NC",
+                "TIF"
+            ]
+        },
+        {
+            "name": "RF Grid Origin",
+            "description": "Set X/Y coordinates of the rainfall grid origin.",
+            "syntax": "RF Grid Origin == <OX>, <OY>",
+            "valueKind": "tuple",
+            "argumentNames": [
+                "<OX>",
+                "<OY>"
+            ]
+        },
+        {
+            "name": "RF Grid Size (N,M)",
+            "description": "Set rainfall grid dimensions in rows and columns.",
+            "syntax": "RF Grid Size (N,M) == <rows>, <columns>",
+            "valueKind": "tuple",
+            "argumentNames": [
+                "<rows>",
+                "<columns>"
+            ]
+        },
+        {
+            "name": "RF Grid Size (X,Y)",
+            "description": "Set rainfall grid dimensions in physical X and Y length.",
+            "syntax": "RF Grid Size (X,Y) == <X_length>, <Y_length>",
+            "valueKind": "tuple",
+            "argumentNames": [
+                "<X_length>",
+                "<Y_length>"
+            ]
+        },
+        {
+            "name": "RF Interpolation Method",
+            "description": "Select rainfall interpolation algorithm.",
+            "syntax": "RF Interpolation Method == IDW | POLYGON | TIN",
+            "valueKind": "enum",
+            "enumValues": [
+                "IDW",
+                "POLYGON",
+                "TIN"
+            ]
+        }
+    ]
+);

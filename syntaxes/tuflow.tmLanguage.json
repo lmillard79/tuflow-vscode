@@ -1,99 +1,169 @@
 {
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "TUFLOW",
+  "scopeName": "source.tuflow",
   "patterns": [
-    {
-      "include": "#keywords"
-    },
-    {
-      "include": "#strings"
-    },
-    {
-      "include": "#constants"
-    },
     {
       "include": "#comments"
     },
     {
-      "include": "#entities"
+      "include": "#control-flow"
     },
     {
-      "include": "#variables"
+      "include": "#command-header"
+    },
+    {
+      "include": "#operators"
+    },
+    {
+      "include": "#quoted-strings"
+    },
+    {
+      "include": "#placeholders"
+    },
+    {
+      "include": "#paths"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#values"
     }
   ],
   "repository": {
-    "keywords": {
-      "patterns": [
-        {
-          "name": "keyword.control.tuflow",
-          "match": "\\b(?i)(if|else\\s?|end if|scenario\\s?|event\\s?)\\b"
-        },
-        {
-          "name": "keyword.operator.comparison.tuflow",
-          "match": "(?<=\\s)==(?=\\s)"
-        }
-      ]
-    },
-    "constants": {
-      "patterns": [
-        {
-          "name": "constant.numeric.tuflow",
-          "match": "(?<=\\s)(\\d+(\\.\\d+)?)(?=(\\s|\\.\\s|,))"
-        },
-        {
-          "name": "constant.language.tuflow",
-          "match": "(?i)(?<=\\s)(on|off|grid)(?=\\s)"
-        }
-      ]
-    },
     "comments": {
       "patterns": [
         {
-          "name": "comment.tuflow",
-          "match": "!.*"
+          "name": "comment.line.exclamation.tuflow",
+          "match": "!.*$"
+        },
+        {
+          "name": "comment.line.number-sign.tuflow",
+          "match": "#.*$"
         }
       ]
     },
-    "strings": {
+    "control-flow": {
+      "patterns": [
+        {
+          "name": "keyword.control.conditional.tuflow",
+          "match": "(?i)^\\s*(?:else\\s+if(?:\\s+(?:scenario|event))?|end\\s+if|if(?:\\s+(?:scenario|event))?|else)\\b"
+        }
+      ]
+    },
+    "command-header": {
+      "patterns": [
+        {
+          "name": "meta.command.header.tuflow",
+          "begin": "^(?=\\s*[^!#=\\r\\n]+?\\s*==)",
+          "end": "(?=\\s*==)|$",
+          "patterns": [
+            {
+              "include": "#known-commands"
+            },
+            {
+              "include": "#command-modifiers"
+            }
+          ]
+        }
+      ]
+    },
+    "known-commands": {
+      "patterns": [
+        {
+          "name": "support.function.tuflow",
+          "match": "(?i)^\\s*(?:Read\\s+GIS(?:\\s+(?:Z\\s+(?:Shape|Line|Point)|Mat|BC|HX|SX|WL|Node|Channel|Pipe))?|Write\\s+GIS(?:\\s+(?:Water\\s+Level|Velocity|Depth))?|Map\\s+Output\\s+(?:Format|Interval)|Geometry\\s+Control\\s+File\\s*\\(\\.tgc\\)|BC\\s+Control\\s+File\\s*\\(\\.tbc\\)|Cell\\s+Size|Set\\s+(?:Code|IWL|Mat|Grid|Origin|Extent)|Start\\s+Time|End\\s+Time|Start|Timestep|Output\\s+Interval|Write\\s+(?:Check\\s+Files|Results)|BC\\s+(?:Event|Database)|Define\\s+(?:Source|Event|BC)|Scenario|Event)(?=\\s*(?:\\|\\s*[^|!#=\\r\\n]+\\s*)*==)"
+        }
+      ]
+    },
+    "command-modifiers": {
+      "patterns": [
+        {
+          "name": "keyword.operator.modifier.tuflow",
+          "match": "\\|"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.assignment.tuflow",
+          "match": "=="
+        },
+        {
+          "name": "keyword.operator.layer.tuflow",
+          "match": ">>"
+        },
+        {
+          "name": "keyword.operator.separator.tuflow",
+          "match": "\\|"
+        }
+      ]
+    },
+    "quoted-strings": {
       "patterns": [
         {
           "name": "string.quoted.double.tuflow",
           "begin": "\"",
-          "end": "\"",
+          "end": "\"|(?=$)",
           "patterns": [
             {
-              "name": "constant.character.escape.tuflow",
-              "begin": "<<",
-              "end": ">>"
+              "include": "#placeholders"
             }
           ]
         },
         {
-          "name": "string.path.tuflow",
-          "match": "([a-zA-Z]:|\\.+)[\\\\/](?:[a-zA-Z0-9_~\\-\\<\\>\\. ]+[\\\\/])*([a-zA-Z0-9_~\\-\\<\\>\\. ]+\\.[a-zA-Z0-9_]{3,})?"
+          "name": "string.quoted.single.tuflow",
+          "begin": "(?<!\\S)'|(?<===)'",
+          "end": "'|(?=$)",
+          "patterns": [
+            {
+              "include": "#placeholders"
+            }
+          ]
+        }
+      ]
+    },
+    "placeholders": {
+      "patterns": [
+        {
+          "name": "variable.other.placeholder.tuflow",
+          "match": "<<[^<>\\r\\n]+>>"
+        }
+      ]
+    },
+    "paths": {
+      "patterns": [
+        {
+          "name": "string.unquoted.path.tuflow",
+          "match": "(?i)(?<![\\w.])(?:(?:[A-Z]:|~|\\.\\.?)[\\\\\\/]|\\\\\\\\)[^\\r\\n!#\"'<>]*?\\.(?:tcf|tgc|tbc|tef|ecf|qcf|trfc|trd|tmf|shp|gpkg|tif|tiff|asc|flt|csv|ts1|ts2|nc|json|txt|dat|xyz)(?=\\b|[\\s>|!]|$)"
         },
         {
-          "name": "string.path.tuflow",
-          "match": "(([a-zA-Z]:|\\.+)[\\\\/])*(?:[a-zA-Z0-9_~\\-\\<\\>\\. ]+[\\\\/])*([a-zA-Z0-9_~\\-\\<\\>\\. ]+\\.[a-zA-Z0-9_]{3,}){1}"
+          "name": "string.unquoted.path.tuflow",
+          "match": "(?i)(?<![\\w.])(?:(?:[A-Z]:|~|\\.\\.?)[\\\\\\/]|\\\\\\\\)[^\\s!#\"'<>]+"
+        },
+        {
+          "name": "string.unquoted.path.tuflow",
+          "match": "(?i)(?<![\\w.])(?:[\\w.-]+[\\\\\\/])*[\\w.-]+\\.(?:tcf|tgc|tbc|tef|ecf|qcf|trfc|trd|tmf|shp|gpkg|tif|tiff|asc|flt|csv|ts1|ts2|nc|json|txt|dat|xyz)(?![\\w.])"
         }
       ]
     },
-    "entities": {
+    "numbers": {
       "patterns": [
         {
-          "name": "entity.name.function.tuflow",
-           "match": "(?i)((\\(DEGREE\\)\\s?|\\(FT\\)\\s?|\\(H\\)\\s?|\\(M\\)\\s?|\\(N,M\\)\\s?|\\(S\\)\\s?|\\(X,Y\\)\\s?|[DEPTHS\\s?||\\s?|VXD]\\s?|[WU]\\s?|1D\\s?|2D\\s?|12DA\\s?|1D2D\\s?|2D2D\\s?|3D\\s?|A\\s?|ABOVE\\s?|ACCESS\\s?|AD\\s?|ADD\\s?|ADDITIONAL\\s?|ADJUST\\s?|ADJUSTMENT\\s?|AEP\\s?|AFTER\\s?|AIR\\s?|ALIGNMENT\\s?|ALL\\s?|ALLOCATION\\s?|ALLOW\\s?|AND\\s?|ANGLE\\s?|ANGLES\\s?|APPLY\\s?|APPROACH\\s?|AREA\\s?|ARI\\s?|AS\\s?|ASC\\s?|AT\\s?|AUTO\\s?|AUTOMATIC\\s?|BALANCE\\s?|BASE\\s?|BC\\s?|BED\\s?|BEND/DROP\\s?|BG\\s?|BLANK\\s?|BLENDING\\s?|BLOCKAGE\\s?|BLUE\\s?|BNDY\\s?|BOUNDARIES\\s?|BOUNDARY\\s?|BOUNDS\\s?|BREACH\\s?|BREACHED\\s?|BREAKLINE\\s?|BRIDGE\\s?|BUILD\\s?|BSS\\s?|C\\s?|CALCULATION\\s?|CALIBRATION\\s?|CAPACITY\\s?|CCA\\s?|CD\\s?|CELL\\s?|CELLS\\s?|CENTRED\\s?|CF\\s?|CH\\s?|CHANGE\\s?|CHANNEL\\s?|CHANNELS\\s?|CHECK\\s?|CHECKS\\s?|CHEZY\\s?|CL\\s?|CLEARANCE\\s?|CLOSED\\s?|CNM\\s?|CNM\\s?|CODE\\s?|COEFFICIENT\\s?|COEFFICIENTS\\s?|COINCIDENT\\s?|COLLAPSE\\s?|COMMAND\\s?|COMMANDS\\s?|COMPRESSION\\s?|CONC\\s?|CONNECTION\\s?|CONNECTIONS\\s?|CONTINUING\\s?|CONTROL\\s?|CONTROLS\\s?|CONVERSION\\s?|CONVEYANCE\\s?|CORES\\s?|CORNERS\\s?|COUNT\\s?|CREATE\\s?|CREEP\\s?|CRITICAL\\s?|CROSS-SECTIONS\\s?|CSV\\s?|CULVERT\\s?|CUT\\s?|CUTOFF\\s?|CV\\s?|CYCLONE\\s?|CORRECTOR\\s?|CORNER\\s?|CPU\\s?|CROSSFALL\\s?|COURANT\\s?|CURVE\\s?|CWF\\s?|DAM\\s?|DANGLING\\s?|DAT\\s?|DATA\\s?|DATABASE\\s?|DATE\\s?|DEBRIS\\s?|DEFAULT\\s?|DEFAULTS\\s?|DEFINE\\s?|DEFINITION\\s?|DELTA\\s?|DEMO\\s?|DENSITY\\s?|DEPTH\\s?|DEPTH/RIPPLE\\s?|DEPTHS\\s?|DETECTION\\s?|DIMENSION\\s?|DIRECTION\\s?|DISCHARGE\\s?|DISPLAY\\s?|DISTANCE\\s?|DISTRIBUTE\\s?|DISTRIBUTION\\s?|DOES\\s?|DOMAIN\\s?|DONGLES\\s?|DOUBLE\\s?|DP\\s?|DRIFT\\s?|DRIVE\\s?|DRYING\\s?|DURING\\s?|DYNAMIC\\s?|DEVICE\\s?|DV\\s?|EB\\s?|ELSE\\s?|EMPTY\\s?|END\\s?|ENGELHUND\\s?|ENTIRE\\s?|EQUATION\\s?|ESTRY\\s?|EVENT\\s?|EVENTS\\s?|EX\\s?|EXCEL\\s?|EXIT\\s?|EXPONENT\\s?|EXT\\s?|EXTENDED\\s?|EXTERNAL\\s?|EXTRAPOLATE\\s?|EXTENT\\s?|EXCLUDE\\s?|FACTOR\\s?|FAILED\\s?|FAILURE\\s?|FC\\s?|FILE\\s?|FILENAME\\s?|FILES\\s?|FIND\\s?|FIRM\\s?|FIRST\\s?|FLAG\\s?|FLC\\s?|FLC/L\\s?|FLOW\\s?|FLOWS\\s?|FLT\\s?|FOLDER\\s?|FOR\\s?|FORCE\\s?|FORMAT\\s?|FORMULA\\s?|FORMULATION\\s?|FORWARD\\s?|FRAC\\s?|FREE\\s?|FREQUENCY\\s?|FRIC\\s?|FROUDE\\s?|FULL\\s?|FULLY\\s?|GA\\s?|GATE\\s?|GAUGE\\s?|GAUGES\\s?|GENERAL\\s?|GEOMETRY\\s?|GIS\\s?|GLO\\s?|GLOBAL\\s?|GPKG\\s?|GPU\\s?|GRID\\s?|GROUND\\s?|GULLY\\s?|GRID\\s?|GRIDDED\\s?|GRIDS\\s?|GWD\\s?|GWL\\s?|H/D\\s?|HARDWARE\\s?|HAZARD\\s?|HCN\\s?|HEAD\\s?|HEADS\\s?|HEC-DSS\\s?|HEIGHT\\s?|HPC\\s?|HQ\\s?|HIGH\\s?|HR\\s?|HRASC\\s?|HRFLT\\s?|HRGPKG\\s?|HRNC\\s?|HRTGO\\s?|HRTIF\\s?|HRWRR\\s?|HURRICANE\\s?|HX\\s?|HYETOGRAPH\\s?|IDS\\s?|IDW\\s?|IF\\s?|IGNORE\\s?|IGNORED\\s?|IGW\\s?|IL\\s?|IN\\s?|INCLUDE\\s?|INDEX\\s?|INERTIA\\s?|INFILTRATION\\s?|INITIAL\\s?|INLET\\s?|INPUT\\s?|INSIDE\\s?|INSTABILITY\\s?|INTACT\\s?|INTERFACE\\s?|INTERPOLATE\\s?|INTERPOLATION\\s?|INTERVAL\\s?|INVERTS\\s?|ISIS\\s?|ITERATE\\s?|ITERATIONS\\s?|IWL\\s?|JUNCTIONS\\s?|K\\s?|KA\\s?|KP\\s?|KENUE\\s?|LAND\\s?|LATITUDE\\s?|LAYERED\\s?|LENGTH\\s?|LEVEL\\s?|LIMIT\\s?|LINE\\s?|LINES\\s?|LINK\\s?|LINKED\\s?|LINKS\\s?|LOCATION\\s?|LOCATIONS\\s?|LOG\\s?|LOSS\\s?|LOSSES\\s?|LP\\s?|M\\s?|M11\\s?|MANHOLE\\s?|MANHOLES\\s?|MANNING\\s?|MANNINGS\\s?|MAP\\s?|MASS\\s?|MAT\\s?|MAX\\s?|MATERIAL\\s?|MATERIALS\\s?|MAXIMUM\\s?|MAXIMUMS\\s?|MAX/MIN\\s?|MEMORY\\s?|MESH\\s?|MESHPARTS\\s?|METHOD\\s?|MI\\s?|MID\\s?|MIN\\s?|MINIMUM\\s?|MINIMUMS\\s?|MODEL\\s?|MOISTURE\\s?|MOMENTUM\\s?|MULTIPLIER\\s?|MATRIX\\s?|MIN\\(ZU,ZV\\)\\s?|N\\s?|NA\\s?|NAR\\s?|NAME\\s?|NC\\s?|NEGATIVE\\s?|NESTING\\s?|NETCDF\\s?|NETCDF\\s?|NETWORK\\s?|NO\\s?|NODE\\s?|NODES\\s?|NONE\\s?|NON-NEWTONIAN\\s?|NOT\\s?|NULL\\s?|NUMBER\\s?|NAN\\s?|NAN\\s?|OBJECT\\s?|OBJECTS\\s?|OBLIQUE\\s?|OBVERT\\s?|OF\\s?|OFF\\s?|OFFSET\\s?|ON\\s?|ONE\\s?|ONLINE\\s?|ONLY\\s?|OPEN\\s?|OPENING\\s?|OPENING/CLOSING\\s?|OPERATING\\s?|OPERATION\\s?|OPERATIONAL\\s?|OPTIMISATION\\s?|ORDER\\s?|ORIFICE\\s?|ORIENTATION\\s?|ORIGIN\\s?|OUTPUT\\s?|OVERFALL\\s?|OVERRIDE\\s?|PARALLEL\\s?|PARTIAL\\s?|PATH\\s?|PAUSE\\s?|PEER\\s?|PERIOD\\s?|PIPE\\s?|PIT\\s?|PITS\\s?|PLATFORM\\s?|PLOT\\s?|PO\\s?|POINT\\s?|POINTS\\s?|POLY\\s?|POLYLINE\\s?|POLYGON\\s?|POLYGONS\\s?|POROSITY\\s?|PRECISION\\s?|PREDICTOR\\s?|PROCESS\\s?|PROCESSING\\s?|PROFILES\\s?|PROJECT\\s?|PROJECTION\\s?|PROPORTION\\s?|PUMP\\s?|Q\\s?|QUADTREE\\s?|R\\s?|RADIATION\\s?|RADIUS\\s?|RAINFALL\\s?|RAM\\s?|RANGE\\s?|RATE\\s?|RATIO\\s?|READ\\s?|RECALCULATE\\s?|RECEPTOR\\s?|RECEPTORS\\s?|RECORD\\s?|RELEASE\\s?|REGION\\s?|RELATIVE\\s?|REPEATED\\s?|REPEATS\\s?|REPORTING\\s?|RES\\s?|RESISTANCE\\s?|RESTART\\s?|RETRY\\s?|RETURN\\s?|REVEAL\\s?|RF\\s?|RIDGE\\s?|ROAD\\s?|ROUTE\\s?|ROWCOL\\s?|S\\s?|SA\\s?|SAME\\s?|SAMPLE\\s?|SAVE\\s?|SB\\s?|SCENARIO\\s?|SCENARIOS\\s?|SCHEME\\s?|SCREEN/LOG\\s?|SEARCH\\s?|SEAT\\s?|SELECTION\\s?|SERIES\\s?|SET\\s?|SETTINGS\\s?|SF\\s?|SGS\\s?|SHALLOW\\s?|SHAPE\\s?|SHP\\s?|SHUTDOWN\\s?|SIDE\\s?|SIDES\\s?|SIMULATIONS\\s?|SIZE\\s?|SLASH\\s?|SLOPE\\s?|SMOOTHED\\s?|SMS\\s?|SNAP\\s?|SOIL\\s?|SOILS\\s?|SOLVER\\s?|SOURCE\\s?|SPEED\\s?|SPILLWAY\\s?|START\\s?|STARTUP/SHUTDOWN\\s?|STOKES\\s?|SLUICE\\s?|STEPPED\\s?|STOP\\s?|STORAGE\\s?|STORE\\s?|STREAM\\s?|STREAMS\\s?|STRESSES\\s?|STRING\\s?|STRUCTURE\\s?|SUBMERGED\\s?|SUPERCRITICAL\\s?|SUPPORTED\\s?|SURCHARGE\\s?|SWEEP\\s?|SX\\s?|SYNCHRONISATION\\s?|SOLUTION\\s?|SRF\\s?|STREAMS\\s?|STRESS\\s?|T\\s?|TABLE\\s?|TAPER\\s?|TARGET\\s?|TAU\\s?|TEMPORAL\\s?|TERMINATE\\s?|TEST\\s?|TEXT\\s?|TGF\\s?|TGO\\s?|THICK\\s?|THIN\\s?|THREADS\\s?|THRESHOLD\\s?|TIF\\s?|TIME\\s?|TIMEOUT\\s?|TIMES\\s?|TIMESTEP\\s?|TIMESTEPS\\s?|TIN\\s?|TLF\\s?|TMO\\s?|TO\\s?|TOLERANCE\\s?|TOP\\s?|TRACK\\s?|TREATMENT\\s?|TRIANGLES\\s?|TRIGGER\\s?|TRIM\\s?|TRIANGLE\\s?|TSF\\s?|TUFLOW\\s?|TUTORIAL\\s?|TYPE\\s?|TYPES\\s?|UK\\s?|UNIT\\s?|UNITS\\s?|UNUSED\\s?|UNSUPPORTED\\s?|UPDATE\\s?|USE\\s?|VALUE\\s?|VALUES\\s?|VARIABLE\\s?|VECTOR\\s?|VEL\\s?|VELOCITY\\s?|VERBOSE\\s?|VERSION\\s?|VERTICAL\\s?|VERTICES\\s?|VG\\s?|VIRTUAL\\s?|VISCOSITY\\s?|WARMUP\\s?|WARNING\\s?|WATER\\s?|WAVE\\s?|WDAY\\s?|WEIGHTING\\s?|WEIR\\s?|WEIRS\\s?|WET\\s?|WET/DRY\\s?|WETTING\\s?|WHEN\\s?|WIBU\\s?|WIDTH\\s?|WIND\\s?|WIND/WAVE\\s?|WLL\\s?|WLLP\\s?|WLLP\\s?|WR\\s?|WRB\\s?|WRC\\s?|WRF\\s?|WRR\\s?|WRITE\\s?|WU\\s?|X1D\\s?|XF\\s?|XMDF\\s?|XP\\s?|XS\\s?|XZ\\s?|Z\\s?|ZC\\s?|ZERO\\s?|ZH\\s?|ZHC\\s?|ZONE\\s?|ZONES\\s?|ZP\\s?|ZPT\\s?|ZPTS\\s?|ZUV\\s?|ZUVC\\s?|ZUVH\\s?|AIR\\s?|ALPHAR\\s?|APPROACH\\s?|AREA\\s?|ARMOUR\\s?|AUTO\\s?|AUTOMATIC\\s?|BC\\s?|BC\\s?|BED\\s?|BOTTOM\\s?|BOUNDARIES\\s?|BOUNDARY\\s?|C\\s?|CELL\\s?|CFL\\s?|CHANGE\\s?|CHECK\\s?|CHECKS\\s?|COEFFICIENT\\s?|CYC\\s?|CYC_HOLLAND\\s?|COORDINATE\\s?|CONCENTRATION\\s?|COUPLING\\s?|CONDITION\\s?|CONDITIONS\\s?|COMMANDS\\s?|CONNECTION\\s?|CONNECTIONS\\s?|CONTROL\\s?|CORIOLIS\\s?|CREATE\\s?|CREEP\\s?|CRITICAL\\s?|CROSS-SECTIONS\\s?|CSV\\s?|CULVERT\\s?|CUT\\s?|CUTOFF\\s?|CV\\s?|CYCLONE\\s?|D50\\s?|DATA\\s?|DATABASE\\s?|DATE\\s?|DATV\\s?|DEFAULT\\s?|DEFAULTS\\s?|DEFINE\\s?|DENSITY\\s?|DEPTH\\s?|DEPTHS\\s?|DEPOSITION\\s?|DIFFUSIVITY\\s?|DIR\\s?|DISPERSION\\s?|DISPLAY\\s?|DISTANCE\\s?|DISTRIBUTION\\s?|DOUBLE\\s?|DRAG\\s?|DRIFT\\s?|DRYING\\s?|DT\\s?|DYNAMIC\\s?|DRY\\s?|ECHO\\s?|EDDY\\s?|ELEVATION\\s?|END\\s?|BC\\s?|END\\s?|OUTPUT\\s?|EQUATION\\s?|EULERIAN\\s?|EXTERNAL\\s?|EROSION\\s?|FACES\\s?|FACTOR\\s?|FB\\s?|FC\\s?|FILE\\s?|FLOW\\s?|FLOWS\\s?|FLUX\\s?|FOLDER\\s?|FORMAT\\s?|FORMULA\\s?|FORMULATION\\s?|FRACTION\\s?|FUNCTION\\s?|G\\s?|GAUGES\\s?|GENERAL\\s?|GEOMETRY\\s?|GIS\\s?|GLOBAL\\s?|GRADIENT\\s?|GROUP\\s?|GROUPS\\s?|HEAD\\s?|HEADER\\s?|HEAT\\s?|HEIGHT\\s?|HIGH\\s?|HORIZONTAL\\s?|HOURS\\s?|HUV\\s?|IC\\s?|IN\\s?|INCLUDE\\s?|INCLUDES\\s?|INITIAL\\s?|INLET/OUTLET\\s?|INPUT\\s?|INSTABILITY\\s?|INTERNAL\\s?|INTERVAL\\s?|ISODATE\\s?|JUNCTIONS\\s?|KINEMATIC\\s?|KS\\s?|LABEL\\s?|LAGRANGIAN\\s?|LAND\\s?|LATITUDE\\s?|LAYERS\\s?|LENGTH\\s?|LEVEL\\s?|LIMIT\\s?|LIMITS\\s?|LIMITER\\s?|LOCATION\\s?|LOG\\s?|LAYER\\s?|LOAD\\s?|LOGDIR\\s?|MANNING\\s?|MASS\\s?|MAT\\s?|MATERIAL\\s?|MAXIMUM\\s?|MESH\\s?|METHOD\\s?|MIN\\s?|MIXING\\s?|MODEL\\s?|MODESPLIT\\s?|MOMENTUM\\s?|MORFAC\\s?|MORPHOLOGICAL\\s?|MSLP\\s?|MSLP_GRID\\s?|NODESTRING\\s?|NODESTRINGS\\s?|NSCALAR\\s?|NTRACER\\s?|NUMBER\\s?|NLAYER\\s?|OF\\s?|OFFSET\\s?|OP\\s?|OPEN\\s?|ORDER\\s?|OUTPUT\\s?|OVERWRITE\\s?|OF\\s?|OFFSET\\s?|OP\\s?|OPEN\\s?|ORDER\\s?|OUTPUT\\s?|OVERWRITE\\s?|PARAMS\\s?|PARAMETERS\\s?|PARTICLE\\s?|PARTICLES\\s?|PERIOD\\s?|POINT\\s?|POINTS\\s?|POLYGON\\s?|PROFILE\\s?|PROJECTION\\s?|Q\\s?|QC\\s?|QCA\\s?|QG\\s?|QGA\\s?|QUALITY\\s?|R\\s?|RADIATION\\s?|RATE\\s?|READ\\s?|REFERENCE\\s?|RESET\\s?|RESTART\\s?|RNS\\s?|RS\\s?|ROUGHNESS\\s?|SALINITY\\s?|SEA\\s?|SAVE\\s?|SCALE\\s?|SCALAR\\s?|SCREEN/LOG\\s?|SEARCH\\s?|SEDIMENT\\s?|SEED\\s?|SET\\s?|SETTLING\\s?|SHEAR\\s?|SHP\\s?|SIDE\\s?|SIDES\\s?|SIGMA\\s?|SIZE\\s?|SLUMPING\\s?|SMS\\s?|SOURCE\\s?|SPATIAL\\s?|SPHERICAL\\s?|STABILITY\\s?|START\\s?|STATE\\s?|STOP\\s?|STRESS\\s?|STRESSES\\s?|STRUCTURE\\s?|SUB-TYPE\\s?|SUFFIX\\s?|SURFACE\\s?|SUSPENDED\\s?|TEMPERATURE\\s?|THICKNESS\\s?|TIME\\s?|TIMES\\s?|TIMESERIES\\s?|TIMESTEP\\s?|TRACKING\\s?|TUFLOW\\s?|TURBULENCE\\s?|TUTORIAL\\s?|TYPE\\s?|TYPES\\s?|USE\\s?|UPDATE\\s?|VALUES\\s?|VARIABLES\\s?|VELOCITY\\s?|VERTICAL\\s?|VISCOSITY\\s?|W10\\s?|W10_GRID\\s?|WARMUP\\s?|WATER\\s?|WAVE\\s?|WEIR\\s?|WEIRS\\s?|WET/DRY\\s?|WETTING\\s?|WIDTH\\s?|WIND\\s?|WIND/WAVE\\s?|WL\\s?|WLS\\s?|WQ\\s?|WRITE\\s?|X1D\\s?|XF\\s?|XMDF\\s?|XP\\s?|XS\\s?|XZ\\s?|Z\\s?|ZERO\\s?|MODIFY\\s?|SPLIT\\s?|TRACER\\s?|ROUTINES\\s?)+)(?=\\s==)"
+          "name": "constant.numeric.tuflow",
+          "match": "(?<![\\w./\\\\])[-+]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][-+]?\\d+)?(?![\\w./\\\\])"
         }
       ]
     },
-    "variables": {
+    "values": {
       "patterns": [
         {
-          "name": "variable.function.tuflow",
-          "match": "(?i)(?<=variable\\s)\\S*(?=\\s==)"
+          "name": "constant.language.tuflow",
+          "match": "(?i)\\b(?:ON|OFF|AUTO|YES|NO|TRUE|FALSE)\\b"
         }
       ]
     }
-  },
-  "scopeName": "source.tuflow"
+  }
 }

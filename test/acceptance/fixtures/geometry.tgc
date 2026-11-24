@@ -1,0 +1,9 @@
+! UX acceptance fixture. GIS files below intentionally do not exist.
+Read GIS Z Shape == gis/absent_terrain.gpkg >> contours
+Read GIS Z Shape == \\fileserver\hydraulics\gis\terrain.gpkg >> contours
+Read GIS Z Shape == ../gis/absent_a.shp | ../gis/absent_b.shp ! path list
+Read GIS Z Shape == <<GIS_ROOT>>/terrain.gpkg >> <<LAYER>>
+Read GIS Z Sha
+Read GIS Z Shape ==
+Read GIS Z Shape = gis/absent_terrain.gpkg
+Set Code == -1.25e-3

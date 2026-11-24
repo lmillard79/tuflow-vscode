@@ -1,0 +1,7 @@
+! Nested TRD reference fixture. Not executable.
+Read File == include/leaf.trd
+Read File == missing_nested.trd
+Read File = leaf.trd
+If Scenario == Baseline
+    Read File == leaf.trd ! nested inline comment
+End If

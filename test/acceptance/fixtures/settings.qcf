@@ -1,0 +1,6 @@
+! Structural editor fixture; these lines are NOT a verified QCF catalogue.
+Output Folder == ../results
+Read GIS Z Shape == gis/absent_quadtree.gpkg >> q_layer
+Set Quadtree Level == 4
+Set Quadtree Level = 4
+Set Quadtree Level ==

@@ -1,47 +1,85 @@
 {
-    "comments": {
-        // symbol used for single line comment. Remove this entry if your language does not support line comments
-        "lineComment": "!",
-    },
-    // symbols used as brackets
-    "brackets": [
-        ["{", "}"],
-        ["[", "]"],
-        ["(", ")"]
+  "comments": {
+    "lineComment": "!"
+  },
+  "brackets": [
+    [
+      "(",
+      ")"
     ],
-    // symbols that are auto closed when typing
-    "autoClosingPairs": [
-        ["{", "}"],
-        ["[", "]"],
-        ["(", ")"],
-        ["\"", "\""],
-        ["'", "'"]
-    ],
-    // symbols that that can be used to surround a selection
-    "surroundingPairs": [
-        ["{", "}"],
-        ["[", "]"],
-        ["(", ")"],
-        ["\"", "\""],
-        ["'", "'"]
-    ],
-    // indentation rules
-    "indentationRules": {
-        "increaseIndentPattern": "^\\s*(if|scenario|event)\\s*==",
-        "decreaseIndentPattern": "^\\s*(end\\sif|end\\sscenario|end\\sevent)"
-    },
-    // automatic indentation
-    "editor.tabSize": 4,
-    "editor.insertSpaces": true,
-    "editor.detectIndentation": false,
-    // on enter rules for comment alignment
-    "onEnterRules": [
-        {
-            "beforeText": "^(.*)!(.*)$",
-            "action": {
-                "indent": "none",
-                "appendText": "! "
-            }
-        }
+    [
+      "[",
+      "]"
     ]
+  ],
+  "autoClosingPairs": [
+    {
+      "open": "(",
+      "close": ")"
+    },
+    {
+      "open": "[",
+      "close": "]"
+    },
+    {
+      "open": "\"",
+      "close": "\"",
+      "notIn": [
+        "string",
+        "comment"
+      ]
+    },
+    {
+      "open": "'",
+      "close": "'",
+      "notIn": [
+        "string",
+        "comment"
+      ]
+    }
+  ],
+  "surroundingPairs": [
+    [
+      "(",
+      ")"
+    ],
+    [
+      "[",
+      "]"
+    ],
+    [
+      "\"",
+      "\""
+    ],
+    [
+      "'",
+      "'"
+    ]
+  ],
+  "indentationRules": {
+    "increaseIndentPattern": {
+      "pattern": "^\\s*(?:(?:else\\s+)?if\\b|else\\b)(?![^!#]*\\bend\\s+if\\b)[^!#\\r\\n]*(?:[!#].*)?$",
+      "flags": "i"
+    },
+    "decreaseIndentPattern": {
+      "pattern": "^\\s*(?:else(?:\\s+if)?|end\\s+if)\\b",
+      "flags": "i"
+    }
+  },
+  "onEnterRules": [
+    {
+      "beforeText": "^\\s*!.*$",
+      "action": {
+        "indent": "none",
+        "appendText": "! "
+      }
+    },
+    {
+      "beforeText": "^\\s*#.*$",
+      "action": {
+        "indent": "none",
+        "appendText": "# "
+      }
+    }
+  ]
 }

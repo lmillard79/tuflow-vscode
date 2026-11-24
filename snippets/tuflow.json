@@ -1,7 +1,56 @@
 {
-    "Insert ordered list": {
-        "prefix": "Read GIS Z Shape",
-        "body": "Read GIS Z Shape${1| , RIDGE , MAX , RAISE , GULLY , MIN , LOWER |}== ",
-        "description": "Insert ordered list"
+    "TCF: Geometry Control File": {
+        "prefix": "tcf-geometry",
+        "body": "Geometry Control File == ${1:../model/model.tgc}",
+        "description": "TCF (.tcf): reference a geometry control file"
+    },
+    "TCF: BC Control File": {
+        "prefix": "tcf-boundaries",
+        "body": "BC Control File == ${1:../model/model.tbc}",
+        "description": "TCF (.tcf): reference a boundary control file"
+    },
+    "TCF: End Time": {
+        "prefix": "tcf-end-time",
+        "body": "End Time == ${1:12}",
+        "description": "TCF (.tcf): set the simulation end time in hours"
+    },
+    "TGC: Cell Size": {
+        "prefix": "tgc-cell-size",
+        "body": "Cell Size == ${1:10}",
+        "description": "TGC (.tgc): set the 2D grid cell size"
+    },
+    "TGC: Read GIS Z Shape": {
+        "prefix": "tgc-z-shape",
+        "body": "Read GIS Z Shape == ${1:../model/gis/2d_zsh_001.shp}",
+        "description": "TGC (.tgc): read a vector 2d_zsh elevation-modification layer"
+    },
+    "TBC: BC Database": {
+        "prefix": "tbc-database",
+        "body": "BC Database == ${1:../bc_dbase/bc_dbase.csv}",
+        "description": "TBC (.tbc): reference a boundary-condition database"
+    },
+    "ECF: Read GIS Network": {
+        "prefix": "ecf-network",
+        "body": "Read GIS Network == ${1:../model/gis/1d_nwk_001.shp}",
+        "description": "ECF (.ecf): read a 1d_nwk vector network layer"
+    },
+    "QCF: Base Cell Size": {
+        "prefix": "qcf-base-cell-size",
+        "body": "Base Cell Size == ${1:20}",
+        "description": "QCF (.qcf): set the quadtree parent cell size"
+    },
+    "TRFC: RF Interpolation Method": {
+        "prefix": "trfc-interpolation",
+        "body": "RF Interpolation Method == ${1|IDW,POLYGON,TIN|}",
+        "description": "TRFC (.trfc): choose a documented rainfall interpolation method"
+    },
+    "TEF: Define Event block": {
+        "prefix": "tef-event",
+        "body": [
+            "Define Event == ${1:design_event}",
+            "    End Time == ${2:12}",
+            "End Define"
+        ],
+        "description": "TEF (.tef): define an event block with an end-time override"
     }
 }

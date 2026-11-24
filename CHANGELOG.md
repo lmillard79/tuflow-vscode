@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Shared typed command catalogue and pure, reusable line parser with audited TCF, TGC, TBC, ECF, TRFC and QCF command metadata linked to official TUFLOW manual appendices.
+- File-context-sensitive command editing, source-backed value suggestions and structured signature help.
+- Conservative TextMate grammar fixtures, conditional indentation, and ten curated command snippets.
+- Locked build and test tooling, Linux/Windows CI at VS Code 1.74.3 and 1.147.0, VSIX content audits, installed-extension tests and companion-extension acceptance.
+
+### Changed
+
+- Official online TUFLOW help replaces captured bundled manuals. The documentation command opens the pinned manual or relevant appendix in the browser.
+- Shared VS Code language ID is now `tuflow` instead of `tuflow-helper`. Update custom file associations and language-specific settings as described in the [migration guide](docs/coexistence.md). The extension identity and documentation command ID are unchanged.
+- Updated development dependencies and reproducible packaging; retained minimum VS Code compatibility and development/production audit gates.
+
+### Fixed
+
+- Multiword command hover, literal operand placeholders in documentation, whole-command completion replacement, duplicate delimiters, and argument-aware signature help.
+- Suppressed unrelated command and generic value suggestions in unsupported file contexts, comments and path operands; unknown syntax is not treated as an error.
+- Canonical repository links and development instructions.
+
+### Removed
+
+- `tuflow-helper.openFileUnderCursor` and its editor-menu action; remove custom bindings to it and use seito-openfile for navigation.
+- Captured HTML manual assets and obsolete root sample files. Maintained acceptance fixtures remain in the repository.
+
+## [0.8.2] - date not recorded
+
+- Version indicated by the existing package manifest; historical release changes were not recorded.
+
 ## [0.8.1] - 2023-04-05
 
 ### Added

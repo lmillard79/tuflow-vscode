@@ -1,76 +1,76 @@
-import { TuflowCommand } from './index';
+/** Audited against the official 2026.3 TUFLOW Quadtree Control File appendix. */
+import { defineAuditedCommands } from './audited';
 
-export const qcfCommands: TuflowCommand[] = [
-	{
-		name: 'Base Cell Size',
-		description: 'Sets the Level 1 (parent) cell size for the quadtree mesh.',
-		category: 'QCF',
-		parameters: ['<cell_size>', 'TGC'],
-		syntax: 'Base Cell Size == [ <cell_size> | {TGC} ]',
-		examples: [
-			'Base Cell Size == 10',
-			'Base Cell Size == TGC'
-		],
-		notes: 'HPC. Using metric units (default) the value is in metres. Using Units == US Customary, the value is in feet. See Section 7.4.1 for more details.'
-	},
-	{
-		name: 'Model Origin and Extent',
-		description: 'Controls how the model origin and extent are defined.',
-		category: 'QCF',
-		parameters: ['Auto', 'TGC'],
-		syntax: 'Model Origin and Extent == [ {Auto} | TGC ]',
-		examples: [
-			'Model Origin and Extent == Auto',
-			'Model Origin and Extent == TGC'
-		],
-		notes: 'HPC. If set to "Auto" the GIS nesting polygons must have a Level 1 polygon defined, otherwise an ERROR is generated. The default setting is "TGC".'
-	},
-	{
-		name: 'Orientation Angle',
-		description: 'Sets the orientation angle of the quadtree mesh.',
-		category: 'QCF',
-		parameters: ['<angle>', 'Optimise', 'TGC'],
-		syntax: 'Orientation Angle == [ <angle> | Optimise | {TGC} ]',
-		examples: [
-			'Orientation Angle == 0',
-			'Orientation Angle == Optimise',
-			'Orientation Angle == TGC'
-		],
-		notes: 'HPC'
-	},
-	{
-		name: 'Quadtree Mesh Processing Method',
-		description: 'Controls the method used for processing the quadtree mesh.',
-		category: 'QCF',
-		parameters: ['FAST', 'Memory Efficient'],
-		syntax: 'Quadtree Mesh Processing Method == [ {FAST} | Memory Efficient ]',
-		examples: [
-			'Quadtree Mesh Processing Method == FAST',
-			'Quadtree Mesh Processing Method == Memory Efficient'
-		],
-		notes: 'HPC'
-	},
-	{
-		name: 'Read GIS Nesting',
-		description: 'Reads a GIS layer containing nesting polygon data.',
-		category: 'QCF',
-		parameters: ['<gis_file_in_2d_qnl_format>'],
-		syntax: 'Read GIS Nesting == [ <gis_file_in_2d_qnl_format> ]',
-		examples: [
-			'Read GIS Nesting == gis/nesting_polygons.shp'
-		],
-		notes: 'HPC'
-	},
-	{
-		name: 'Spatial Database',
-		description: 'Controls the spatial database functionality.',
-		category: 'QCF',
-		parameters: ['OFF', 'TCF'],
-		syntax: 'Spatial Database == [ OFF | TCF ]',
-		examples: [
-			'Spatial Database == OFF',
-			'Spatial Database == TCF'
-		],
-		notes: 'HPC'
-	}
-];
+export const qcfCommands = defineAuditedCommands('QCF',
+    'https://docs.tuflow.com/classic-hpc/manual/2026.3/87-AppendicesH-QCFCommands.html',
+    [
+        {
+            "name": "Base Cell Size",
+            "description": "Define the Level 1 quadtree cell size or inherit from TGC.",
+            "syntax": "Base Cell Size == <cell_size> | {TGC}",
+            "valueKind": "number",
+            "enumValues": [
+                "TGC"
+            ]
+        },
+        {
+            "name": "If Event",
+            "description": "Condition subsequent commands on event names.",
+            "syntax": "If Event == <e1> | <e2> | …",
+            "valueKind": "text"
+        },
+        {
+            "name": "If Scenario",
+            "description": "Condition subsequent commands on scenario names.",
+            "syntax": "If Scenario == <s1> | <s2> | …",
+            "valueKind": "text"
+        },
+        {
+            "name": "Model Origin and Extent",
+            "description": "Choose quadtree extent derived from nesting polygons or the TGC.",
+            "syntax": "Model Origin and Extent == {Auto} | TGC",
+            "valueKind": "enum",
+            "enumValues": [
+                "Auto",
+                "TGC"
+            ],
+            "notes": "Default is TGC for Single Level mode and Auto when an explicit .qcf is supplied."
+        },
+        {
+            "name": "Orientation Angle",
+            "description": "Set mesh orientation numerically, optimise, or inherit TGC.",
+            "syntax": "Orientation Angle == <angle> | Optimise | {TGC}",
+            "valueKind": "number",
+            "enumValues": [
+                "Optimise",
+                "TGC"
+            ]
+        },
+        {
+            "name": "Quadtree Mesh Processing Method",
+            "description": "Choose the preprocessing memory/speed trade-off.",
+            "syntax": "Quadtree Mesh Processing Method == {FAST} | Memory Efficient",
+            "valueKind": "enum",
+            "enumValues": [
+                "FAST",
+                "Memory Efficient"
+            ]
+        },
+        {
+            "name": "Read GIS Nesting",
+            "description": "Read 2d_qnl GIS polygons defining quadtree refinement.",
+            "syntax": "Read GIS Nesting == <gis_file_in_2d_qnl_format>",
+            "valueKind": "file"
+        },
+        {
+            "name": "Spatial Database",
+            "description": "Select the TCF spatial database or disable it.",
+            "syntax": "Spatial Database == OFF | TCF",
+            "valueKind": "enum",
+            "enumValues": [
+                "OFF",
+                "TCF"
+            ]
+        }
+    ]
+);

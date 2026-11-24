@@ -1,0 +1,7 @@
+! UX acceptance fixture. No real GIS data included.
+Read GIS BC == gis/absent_bc.shp
+Read GIS BC == gis/absent_bc.gpkg >> bc_lines
+Read GIS BC == <<BC_ROOT>>/bc.shp
+Read GIS BC == gis/absent_bc.shp ! tpv-ignore
+Read GIS BC ==
+Read GIS BC = gis/absent_bc.shp

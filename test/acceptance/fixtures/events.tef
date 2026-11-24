@@ -1,0 +1,9 @@
+! Structural editor fixture; command validity requires a documentation audit.
+Define Event == base
+Define Event = base
+    BC Event Source == base | rainfall
+End Define
+If Event == base
+    BC Event Source == base | q100
+End If
+BC Event Source ==

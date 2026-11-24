@@ -1,208 +1,49 @@
 /**
- * TCF Commands (Appendix A)
- * TUFLOW Control File commands for simulation setup
+ * TCF editor catalogue: official TUFLOW Classic/HPC Manual 2026.3.
+ * Unverified and legacy commands are not advertised; they are NOT diagnosed.
  */
+import { verifiedCommand, type VerifiedTuflowCommand } from './verifiedCommand';
 
-export interface TuflowCommand {
-    name: string;
-    description: string;
-    category: string;
-    parameters?: string[];
-    examples?: string[];
-    syntax?: string;
-    notes?: string;
-}
+const DOCUMENTATION_URL = 'https://docs.tuflow.com/classic-hpc/manual/2026.3/80-AppendicesA-TCFCommands.html';
 
-export const tcfCommands: TuflowCommand[] = [
-    {
-        name: 'Read GIS',
-        description: 'Reads GIS layers for the simulation domain',
-        category: 'TCF',
-        parameters: ['Layer Type', 'File Path', 'Optional Parameters'],
-        syntax: 'Read GIS [Layer Type] == [File Path] [Optional Parameters]',
-        examples: [
-            'Read GIS Z Shape == model\\dem.shp',
-            'Read GIS Material == model\\materials.shp',
-            'Read GIS BC == model\\boundaries.shp'
-        ],
-        notes: 'Multiple GIS layers can be read in sequence'
-    },
-    {
-        name: 'Write GIS',
-        description: 'Writes GIS output layers',
-        category: 'TCF',
-        parameters: ['Output Type', 'File Path', 'Optional Parameters'],
-        syntax: 'Write GIS [Output Type] == [File Path] [Optional Parameters]',
-        examples: [
-            'Write GIS Water Level == results\\wl.shp',
-            'Write GIS Velocity == results\\vel.shp',
-            'Write GIS Depth == results\\depth.shp'
-        ]
-    },
-    {
-        name: 'Cell Size',
-        description: 'Defines the computational cell size for the simulation',
-        category: 'TCF',
-        parameters: ['Size Value'],
-        syntax: 'Cell Size == [Value]',
-        examples: ['Cell Size == 10', 'Cell Size == 5.5'],
-        notes: 'Units must be consistent with coordinate system'
-    },
-    {
-        name: 'Set Code',
-        description: 'Sets the computational code version',
-        category: 'TCF',
-        parameters: ['Code Version'],
-        syntax: 'Set Code == [Version]',
-        examples: ['Set Code == Classic', 'Set Code == HPC'],
-        notes: 'Determines which computational engine to use'
-    },
-    {
-        name: 'Start Time',
-        description: 'Sets the simulation start time',
-        category: 'TCF',
-        parameters: ['Time Value'],
-        syntax: 'Start Time == [HH:MM:SS]',
-        examples: ['Start Time == 00:00:00', 'Start Time == 01:30:00']
-    },
-    {
-        name: 'End Time',
-        description: 'Sets the simulation end time',
-        category: 'TCF',
-        parameters: ['Time Value'],
-        syntax: 'End Time == [HH:MM:SS]',
-        examples: ['End Time == 12:00:00', 'End Time == 48:00:00']
-    },
-    {
-        name: 'Timestep',
-        description: 'Sets the computational time step',
-        category: 'TCF',
-        parameters: ['Time Value'],
-        syntax: 'Timestep == [Seconds]',
-        examples: ['Timestep == 1', 'Timestep == 0.5'],
-        notes: 'Adaptive timestep may override this value'
-    },
-    {
-        name: 'Output Interval',
-        description: 'Sets the frequency of output files',
-        category: 'TCF',
-        parameters: ['Time Value'],
-        syntax: 'Output Interval == [Seconds]',
-        examples: ['Output Interval == 300', 'Output Interval == 900']
-    },
-    {
-        name: 'Map Output Interval',
-        description: 'Sets the frequency of map output files',
-        category: 'TCF',
-        parameters: ['Time Value'],
-        syntax: 'Map Output Interval == [Seconds]',
-        examples: ['Map Output Interval == 900', 'Map Output Interval == 3600']
-    },
-    {
-        name: 'Write Check Files',
-        description: 'Controls the generation of check files',
-        category: 'TCF',
-        parameters: ['Check Type', 'Optional Parameters'],
-        syntax: 'Write Check Files == [Type] [Parameters]',
-        examples: [
-            'Write Check Files == All',
-            'Write Check Files == None',
-            'Write Check Files == Zpt Check'
-        ]
-    },
-    {
-        name: 'Write Results',
-        description: 'Controls the generation of result files',
-        category: 'TCF',
-        parameters: ['Result Type', 'Optional Parameters'],
-        syntax: 'Write Results == [Type] [Parameters]',
-        examples: [
-            'Write Results == All',
-            'Write Results == Water Level',
-            'Write Results == Velocity Depth'
-        ]
-    },
-    {
-        name: 'BC Event',
-        description: 'Defines boundary condition events',
-        category: 'TCF',
-        parameters: ['Event Name', 'Event Type', 'Parameters'],
-        syntax: 'BC Event == [Name] [Type] [Parameters]',
-        examples: [
-            'BC Event == Rain1 Rainfall ~\\rainfall.csv',
-            'BC Event == Tide1 Tide ~\\tide.csv'
-        ]
-    },
-    {
-        name: 'BC Database',
-        description: 'Defines boundary condition database connections',
-        category: 'TCF',
-        parameters: ['Database Type', 'File Path'],
-        syntax: 'BC Database == [Type] [File Path]',
-        examples: [
-            'BC Database == TMF ~\\bc_database.tmf',
-            'BC Database == TBC ~\\bc_database.tbc'
-        ]
-    },
-    {
-        name: 'Define Source',
-        description: 'Defines flow sources in the simulation',
-        category: 'TCF',
-        parameters: ['Source Name', 'Parameters'],
-        syntax: 'Define Source == [Name] [Parameters]',
-        examples: [
-            'Define Source == Inflow1 Q 100',
-            'Define Source == Outflow1 Q -50'
-        ]
-    },
-    {
-        name: 'Set IWL',
-        description: 'Sets initial water level conditions',
-        category: 'TCF',
-        parameters: ['Water Level Value'],
-        syntax: 'Set IWL == [Value]',
-        examples: ['Set IWL == 10', 'Set IWL == Auto'],
-        notes: 'Can use Auto for automatic initial water level'
-    },
-    {
-        name: 'Set IWC',
-        description: 'Sets initial water conditions',
-        category: 'TCF',
-        parameters: ['Condition Type', 'Parameters'],
-        syntax: 'Set IWC == [Type] [Parameters]',
-        examples: ['Set IWC == Dry', 'Set IWC == Wet 1.5']
-    },
-    {
-        name: 'Set Mat',
-        description: 'Defines material properties',
-        category: 'TCF',
-        parameters: ['Material ID', 'Parameters'],
-        syntax: 'Set Mat == [ID] [Parameters]',
-        examples: [
-            'Set Mat == 1 Manning 0.03',
-            'Set Mat == 2 HW 0.1'
-        ]
-    },
-    {
-        name: 'Set 2D Domain',
-        description: 'Defines 2D simulation domain properties',
-        category: 'TCF',
-        parameters: ['Parameters'],
-        syntax: 'Set 2D Domain == [Parameters]',
-        examples: [
-            'Set 2D Domain == Lower Left 0 0',
-            'Set 2D Domain == Upper Right 1000 1000'
-        ]
-    },
-    {
-        name: 'Set 1D Domain',
-        description: 'Defines 1D simulation domain properties',
-        category: 'TCF',
-        parameters: ['Parameters'],
-        syntax: 'Set 1D Domain == [Parameters]',
-        examples: [
-            'Set 1D Domain == Network ~\\network.tin',
-            'Set 1D Domain == Channels ~\\channels.tin'
-        ]
-    }
+export const tcfCommands: readonly VerifiedTuflowCommand[] = [
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Start Time","description":"Simulation start time, in hours (not a clock string).","valueKind":"hours","valueSyntax":"<time_in_hours>","examples":["Start Time == 0","Start Time == -1"],"notes":"Negative and fractional hours are permitted.","referenceCommand":"Start Time","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"End Time","description":"Simulation finish time in hours, after the start time.","valueKind":"hours","valueSyntax":"<time_in_hours>","examples":["End Time == 12","End Time == 48"],"notes":"","referenceCommand":"End Time","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Timestep","description":"Classic fixed timestep or HPC starting timestep, in seconds.","valueKind":"seconds","valueSyntax":"<timestep_in_seconds>","examples":["Timestep == 1","Timestep == 0.5"],"notes":"HPC subsequently uses adaptive timestepping.","referenceCommand":"Timestep","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Cell Size","description":"Set the 2D cell size in model distance units.","valueKind":"distance","valueSyntax":"<value_in_metres>","examples":["Cell Size == 10"],"notes":"","referenceCommand":"Cell Size","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Map Output Interval","description":"Interval between map outputs in seconds.","valueKind":"seconds","valueSyntax":"<time_in_seconds>","examples":["Map Output Interval == 900","Map Output Interval == 0"],"notes":"Zero selects maximum-only output if maximum tracking is enabled.","referenceCommand":"Map Output Interval","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Time Series Output Interval","description":"Time-series / plot-output interval in seconds.","valueKind":"seconds","valueSyntax":"<time_in_seconds>","examples":["Time Series Output Interval == 300"],"notes":"","referenceCommand":"Time Series Output Interval","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Start Map Output","description":"Simulation hour when map output starts.","valueKind":"hours","valueSyntax":"<time_in_hours>","examples":["Start Map Output == 0"],"notes":"","referenceCommand":"Start Map Output","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"End Map Output","description":"Simulation hour when map output finishes.","valueKind":"hours","valueSyntax":"<time_in_hours>","examples":["End Map Output == 12"],"notes":"","referenceCommand":"End Map Output","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Geometry Control File","description":"Include a TUFLOW Geometry Control File.","valueKind":"file","valueSyntax":"<.tgc_file>","examples":["Geometry Control File == ..\\model\\geometry.tgc"],"notes":"","referenceCommand":"Geometry Control File","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"BC Control File","description":"Include a TUFLOW Boundary Control File.","valueKind":"file","valueSyntax":"<.tbc_file>","examples":["BC Control File == ..\\model\\boundaries.tbc"],"notes":"","referenceCommand":"BC Control File","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"ESTRY Control File","description":"Include a 1D ESTRY Control File.","valueKind":"file","valueSyntax":"<.ecf_file>","examples":["ESTRY Control File == ..\\model\\network.ecf"],"notes":"","referenceCommand":"ESTRY Control File","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Event File","description":"Reference an event definition file.","valueKind":"file","valueSyntax":"<.tef_file>","examples":["Event File == ..\\runs\\events.tef"],"notes":"","referenceCommand":"Event File","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Quadtree Control File","description":"Reference the quadtree geometry configuration.","valueKind":"file","valueSyntax":"<.qcf_file>","examples":["Quadtree Control File == ..\\model\\quadtree.qcf"],"notes":"","referenceCommand":"Quadtree Control File","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Rainfall Control File","description":"Reference the rainfall control file.","valueKind":"file","valueSyntax":"<.trfc_file>","examples":["Rainfall Control File == ..\\model\\rainfall.trfc"],"notes":"","referenceCommand":"Rainfall Control File","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"BC Database","description":"Select the active CSV boundary-condition database.","valueKind":"file","valueSyntax":"<.csv_file>","examples":["BC Database == ..\\bc_dbase\\bc_dbase.csv"],"notes":"Not a TBC or TMF file.","referenceCommand":"BC Database","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Read Materials File","description":"Read material roughness definitions from a CSV or TMF.","valueKind":"file","valueSyntax":"<file> [ | <n_factor> ]","examples":["Read Materials File == ..\\model\\materials.csv","Read Materials File == ..\\model\\materials.tmf | 1.1"],"notes":"Optional factor multiplies Manning's n.","referenceCommand":"Read Materials File","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Read Soils File","description":"Read soil definitions from a TUFLOW soil file.","valueKind":"file","valueSyntax":"<file.tsoilf>","examples":["Read Soils File == ..\\model\\soils.tsoilf"],"notes":"","referenceCommand":"Read Soils File","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Read GIS PO","description":"Read 2D plot-output location features.","valueKind":"gis-layer","valueSyntax":"<gis_layer>","examples":["Read GIS PO == ..\\model\\gis\\2d_po.shp"],"notes":"","referenceCommand":"Read GIS PO","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Read GIS IWL","description":"Read vector initial water level data.","valueKind":"gis-layer","valueSyntax":"<gis_layer>","examples":["Read GIS IWL == ..\\model\\gis\\2d_iwl.shp"],"notes":"","referenceCommand":"Read GIS IWL","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Set IWL","description":"Set the initial water level or request AUTO initialization.","valueKind":"numeric-or-enum","valueSyntax":"<value> | AUTO","examples":["Set IWL == 10","Set IWL == AUTO"],"notes":"AUTO is explicitly documented.","referenceCommand":"Set IWL","permittedValues":["AUTO"]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Solution Scheme","description":"Select the Classic or HPC numerical scheme.","valueKind":"enum","valueSyntax":"CLASSIC | HPC | HPC 1st","examples":["Solution Scheme == HPC","Solution Scheme == CLASSIC"],"notes":"Do not use Set Code as a solver selector.","referenceCommand":"Solution Scheme","permittedValues":["CLASSIC","HPC","HPC 1st"]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Hardware","description":"Select CPU or GPU hardware where supported.","valueKind":"enum","valueSyntax":"CPU | GPU","examples":["Hardware == GPU"],"notes":"Hardware is independent of the selected numerical scheme.","referenceCommand":"Hardware","permittedValues":["CPU","GPU"]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"GIS Format","description":"Specify the GIS file format.","valueKind":"enum","valueSyntax":"MIF | SHP | GPKG","examples":["GIS Format == GPKG"],"notes":"MIF, SHP and GPKG are documented.","referenceCommand":"GIS Format","permittedValues":["MIF","SHP","GPKG"]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"GPKG Projection","description":"Define the model projection using a GeoPackage layer.","valueKind":"gis-layer","valueSyntax":"<GPKG_layer>","examples":["GPKG Projection == ..\\model\\gis\\projection.gpkg >> projection"],"notes":"","referenceCommand":"GPKG Projection","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"SHP Projection","description":"Define the model projection using a PRJ file.","valueKind":"file","valueSyntax":"<.prj>","examples":["SHP Projection == ..\\model\\gis\\projection.prj"],"notes":"","referenceCommand":"SHP Projection","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Output Folder","description":"Set the simulation results output folder.","valueKind":"folder","valueSyntax":"<folder>","examples":["Output Folder == ..\\results"],"notes":"","referenceCommand":"Output Folder","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Log Folder","description":"Set the directory for log files.","valueKind":"folder","valueSyntax":"<folder>","examples":["Log Folder == ..\\results\\log"],"notes":"","referenceCommand":"Log Folder","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Map Output Data Types","description":"Select map output data types by their documented tokens.","valueKind":"tokens","valueSyntax":"<data_types>","examples":["Map Output Data Types == h V q"],"notes":"","referenceCommand":"Map Output Data Types","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Map Output Format","description":"Choose one or more map output formats.","valueKind":"enum-list","valueSyntax":"<formats>","examples":["Map Output Format == XMDF TIF"],"notes":"","referenceCommand":"Map Output Format","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Time Series Output Format","description":"Select time-series output format.","valueKind":"enum","valueSyntax":"csv | NC | GPKG","examples":["Time Series Output Format == GPKG"],"notes":"CSV, NC and GPKG are supported.","referenceCommand":"Time Series Output Format","permittedValues":["csv","NC","GPKG"]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Timestep Maximum","description":"Set maximum HPC adaptive timestep.","valueKind":"seconds-or-auto","valueSyntax":"AUTO | <max_timestep_in_seconds>","examples":["Timestep Maximum == AUTO","Timestep Maximum == 10"],"notes":"","referenceCommand":"Timestep Maximum","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Read File","description":"Include additional control-file commands.","valueKind":"file","valueSyntax":"<file>","examples":["Read File == ..\\model\\shared.tcf"],"notes":"","referenceCommand":"Read File","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Write Check Files","description":"Set check-file directory or prefix.","valueKind":"folder","valueSyntax":"<file_prefix>","examples":["Write Check Files == ..\\check\\"],"notes":"Sets the folder/prefix for generated check files; ALL/NONE forms have no == and are not suggested by the current provider. INCLUDE and EXCLUDE are separate prefix-list entries.","referenceCommand":"Write Check Files","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Write Check Files EXCLUDE","description":"Exclude check layers by their TUFLOW filename prefixes.","valueKind":"tokens","valueSyntax":"<prefix_list>","examples":["Write Check Files EXCLUDE == zpt uvpt"],"notes":"Space-delimited check-layer prefixes; these are not paths or output folders.","referenceCommand":"Write Check Files","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Write Check Files INCLUDE","description":"Include only check layers matching the specified TUFLOW prefixes.","valueKind":"tokens","valueSyntax":"<prefix_list>","examples":["Write Check Files INCLUDE == DEM_Z"],"notes":"Space-delimited check-layer prefixes; these are not paths or output folders.","referenceCommand":"Write Check Files","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Output Files EXCLUDE","description":"Suppress specified time-series or 1D output files.","valueKind":"tokens","valueSyntax":"<output_type_list>","examples":["Output Files EXCLUDE == EOF TSMB"],"notes":"Documented left-hand EXCLUDE modifier.","referenceCommand":"Output Files","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"Output Files INCLUDE","description":"Include specified time-series or 1D output files.","valueKind":"tokens","valueSyntax":"<output_type_list>","examples":["Output Files INCLUDE == TS 1d_CCA"],"notes":"Documented left-hand INCLUDE modifier.","referenceCommand":"Output Files","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"XMDF Map Output Interval","description":"Set XMDF-specific map output interval.","valueKind":"seconds","valueSyntax":"<time_in_seconds>","examples":["XMDF Map Output Interval == 360"],"notes":"Documented format-prefix variant.","referenceCommand":"Map Output Interval","permittedValues":[]}),
+    verifiedCommand('TCF', DOCUMENTATION_URL, {"name":"TIF Map Output Data Types","description":"Select TIF-specific map output variables.","valueKind":"tokens","valueSyntax":"<data_types>","examples":["TIF Map Output Data Types == d BSS"],"notes":"Documented format-prefix variant.","referenceCommand":"Map Output Data Types","permittedValues":[]}),
 ];
